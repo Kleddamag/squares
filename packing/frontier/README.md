@@ -130,7 +130,7 @@ The ones that carry the most weight:
   `mathematics` blocker.
   At 55 of them the catalogue gives the side as a closed form, which Evan Daniel’s
   rational certificate of the packing bounds from above without reaching it (T-118); at
-  $n = 29$ the ceiling is an interval enclosure written in full.
+  $n = 29$ the ceiling is an interval-certified bound written in full.
   In 43 more it sits above the printed side by no more than one unit of its last place,
   which `bounds_agree_at_declared_precision` reads as the same bound: 2 of them are
   Couzo’s packings certified here (T-056), at $n = 105$ and $130$, whose exact sides

@@ -19,16 +19,20 @@ lies strictly below the verified upper bound the record held before this import:
 them, the integer grid at 74 and the exact certificates of the catalogue's pictures at
 ``n = 69, 83, 87`` (T-088, T-089). It writes ``receipts/ceiling-survey.json``, which also
 lists the one count whose ceiling trailed its report and does not move, ``n = 29``, where
-an interval enclosure of the exact optimum already lies below ``S'``.
+the interval-certified bound ``E-n029-interval-certified-upper`` already lies below ``S'``.
+It refuses a certificate whose side is not above the catalogue's closed form, which would
+be a smaller packing than the catalogue's and no ceiling.
 
 **What it writes**, registered as T-118 (provisional). At each of the 77 counts the
 verified upper lane becomes that value, citing the exact replay here and the source's
 checkers run here; the earlier upper-gap blocker goes, and where the report has a closed
-form, which no rational certificate reaches, a blocker saying by how much the ceiling still
-trails it takes its place. The body gains a dated paragraph and a section on the
-certificate where the ceiling section stood, and keeps a rewritten ceiling section where it
-still trails. At ``n = 69, 83, 87`` the earlier certificate's sentences go into the past.
-The reported lane is unchanged: the packing, its side and its credit are the catalogue's.
+form, which the certificate's side lies just above, a blocker saying by how much the ceiling
+still trails it takes its place: no rational certificate reaches an irrational form, and only
+one that closes its contacts exactly would reach the six rational ones. The body gains a
+dated paragraph and a section on the certificate where the ceiling section stood, and keeps
+a rewritten ceiling section where it still trails. At ``n = 69, 83, 87`` the earlier
+certificate's sentences go into the past. The reported lane is unchanged: the packing, its
+side and its credit are the catalogue's.
 
 It is a layer over the tools that wrote these records, as ``devtools.apply_exact_optima``
 is: ``devtools.generate_frontier_case`` applies it last to its drafts, so that its
@@ -165,6 +169,25 @@ def _closed_form_gap(exact_form: str | None, side: Fraction) -> float | None:
     return float(f"{float(above):.4e}")
 
 
+def closed_form_degree(exact_form: str | None) -> int | None:
+    """The degree over Q of a closed-form side, from SymPy's exact minimal polynomial, or
+    `None` without one: 1 is a rational side, which a contact-exact rational certificate
+    can reach, and above 1 an irrational one, which no rational certificate reaches."""
+    if not exact_form:
+        return None
+    import sympy as sp  # noqa: PLC0415 - optional dependency, imported where it is used
+    from sympy.parsing.sympy_parser import (  # noqa: PLC0415
+        implicit_multiplication_application,
+        parse_expr,
+        standard_transformations,
+    )
+
+    transformations = (*standard_transformations, implicit_multiplication_application)
+    value = parse_expr(exact_form, transformations=transformations)
+    variable = sp.Symbol("x")
+    return int(sp.degree(sp.minimal_polynomial(value, variable), variable))
+
+
 def survey_row(
     n: int,
     case: Mapping[str, Any],
@@ -193,6 +216,7 @@ def survey_row(
             f"{float(side - Fraction(Decimal(str(reported['value'])))):.4e}"
         ),
         "certified_above_exact_side_by": _closed_form_gap(reported.get("exact_form"), side),
+        "printed_exact_form_degree": closed_form_degree(reported.get("exact_form")),
         "verified_value": value,
         "exact_form": after["exact_form"],
         "agrees_with_report": bounds_agree_at_declared_precision(reported, after),
@@ -243,6 +267,12 @@ def survey(directory: Path = certificates.CERTS) -> dict[str, Any]:
             )
             if not certificates.is_decided(certificates.certificate_path(directory, n), n):
                 raise ValueError(f"n={n}: the certificate read is not the one decided")
+            gap = _closed_form_gap(reported.get("exact_form"), side)
+            if gap is not None and gap <= 0:
+                raise ValueError(
+                    f"n={n}: the certificate's side is not above the catalogue's closed form, "
+                    "which would be a smaller packing than the catalogue's, not a ceiling"
+                )
             pose = certificates.pose_match(certificate, free.get(n))
             rows.append(
                 survey_row(
@@ -328,17 +358,29 @@ def verified_block(row: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def trailing_blocker(row: Mapping[str, Any], evidence: Sequence[str]) -> dict[str, Any]:
-    """The ``mathematics`` blocker of a count whose report is a closed form."""
+    """The ``mathematics`` blocker of a count whose report is a closed form: irrational,
+    which no rational certificate reaches, or rational, which one that closes its
+    contacts exactly would (the review's EC-1)."""
+    rational = row["printed_exact_form_degree"] == 1
+    form = (
+        "a rational side, which this certificate, rounded outward, does not reach"
+        if rational
+        else "an irrational side, which no rational certificate reaches"
+    )
+    remedy = (
+        "a rational certificate of the packing that closes its contacts exactly"
+        if rational
+        else "an exact algebraic certificate of the packing at its closed-form side"
+    )
     return {
         "kind": "mathematics",
         "detail": (
             f"verified_upper_bound is {EXACT_REPLAY}'s certified side rounded up, "
             f"{row['verified_value']}, which trails the report {row['printed_side']} by "
             f"{_difference(row['verified_value'], row['printed_side'])}, and the report's "
-            f"exact form {row['printed_exact_form']}, which no rational certificate "
-            "reaches: the certificate's own side lies "
-            f"{_scientific(row['certified_above_exact_side_by'])} above it. Closing the gap "
-            "needs an exact algebraic certificate of the packing at its closed-form side."
+            f"exact form {row['printed_exact_form']}, {form}: the certificate's own side "
+            f"lies {_scientific(row['certified_above_exact_side_by'])} above it. Closing "
+            f"the gap needs {remedy}."
         ),
         "evidence": list(evidence),
     }
@@ -545,9 +587,15 @@ def ceiling_section(n: int, row: Mapping[str, Any]) -> str:
         f"packing’s side exactly, as `{row['printed_exact_form']}`, and the certificate’s "
         f"side lies `{_scientific(row['certified_above_exact_side_by'])}` above that: its "
         "squares are rational and each is kept clear of its neighbours and the walls, so "
-        "it bounds the exact side from above and does not reach it. The `mathematics` "
-        "blocker in the frontmatter records the difference. Read `reported_upper_bound` "
-        "for the best known side length."
+        "it bounds the exact side from above and does not reach it. "
+        + (
+            "That side is rational, so a rational certificate of the packing that closes "
+            "its contacts exactly could reach it. "
+            if row["printed_exact_form_degree"] == 1
+            else "That side is irrational, so no rational certificate reaches it. "
+        )
+        + "The `mathematics` blocker in the frontmatter records the difference. Read "
+        "`reported_upper_bound` for the best known side length."
     )
     return f"{CEILING_HEADING}\n\n{first}\n\n{second}\n\n"
 

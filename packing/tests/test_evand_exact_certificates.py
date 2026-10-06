@@ -256,8 +256,8 @@ def test_the_ceiling_counts_are_the_ones_the_survey_derives() -> None:
 
 
 def test_n29_trails_its_report_and_keeps_its_own_ceiling() -> None:
-    """The one trailing count the certificates do not move: its interval enclosure lies
-    below the certificate's side, so a rounding of that side would only weaken it."""
+    """The one trailing count the certificates do not move: its interval-certified bound
+    lies below the certificate's side, so a rounding of that side would only weaken it."""
     receipt = json.loads(apply_exact_ceilings.SURVEY_RECEIPT.read_text(encoding="utf-8"))
     unmoved = {row["n"]: row for row in receipt["unmoved"]}
     assert sorted(unmoved) == [29]
@@ -298,3 +298,22 @@ def test_each_ceiling_is_the_certified_side_rounded_up_at_the_printed_precision(
         assert agrees == (not case["reported_upper_bound"].get("exact_form")), n
         assert agrees == row["agrees_with_report"], n
         assert any(b["kind"] == "mathematics" for b in case["blockers"]) != agrees, n
+
+
+def test_every_closed_form_lies_below_its_certificate_and_six_are_rational() -> None:
+    """A certificate below the catalogue's closed form would be a smaller packing, not a
+    ceiling, and `survey` refuses one; at every closed-form count the side lies above it.
+    Six of those forms are rational, which a contact-exact rational certificate could
+    reach, and the blockers say which (the review's EC-1 and EC-3)."""
+    rows = apply_exact_ceilings.committed()
+    closed = {n: row for n, row in rows.items() if row["printed_exact_form"]}
+    assert len(closed) == 55
+    assert all(row["certified_above_exact_side_by"] > 0 for row in closed.values())
+    rational = sorted(n for n, row in closed.items() if row["printed_exact_form_degree"] == 1)
+    assert rational == [50, 171, 198, 230, 261, 293]
+    assert apply_exact_ceilings.closed_form_degree("7 + (4/7)") == 1
+    assert apply_exact_ceilings.closed_form_degree("7 - (1/2)sqrt(2) + sqrt(1 + sqrt(2))") == 4
+    for n, row in closed.items():
+        blocker = apply_exact_ceilings.trailing_blocker(row, ["E-kingbird-upper-register"])
+        irrational = "an irrational side, which no rational certificate reaches"
+        assert (irrational in blocker["detail"]) == (n not in rational), n

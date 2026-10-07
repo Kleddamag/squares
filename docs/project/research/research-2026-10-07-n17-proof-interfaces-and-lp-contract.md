@@ -15,8 +15,9 @@ This is the mathematical contract for BC-431 and BC-433 under the
 [ten-hour plan](../specs/active/plan-2026-10-06-n17-ten-hour-session.md), derived from
 source at `f3a13e3a2`. The coordinator owns hypothesis and experiment registration.
 No new target measurement or verdict is recorded here.
-The centred-container join is a hand derivation by the session’s sole Astra agent; it
-has not received independent mathematical review or been machine-checked.
+The centred-container join and the finite-geometry arguments below are hand derivations
+by the session’s sole Astra agent; they have not received independent mathematical
+review or been machine-checked.
 Existing receipts keep their existing assurance and scope.
 
 ## Proof Interfaces
@@ -482,6 +483,284 @@ verified dual or infeasibility certificates for every allowed branch, treatment 
 apex and equality set, exact-root arithmetic, and slider-domain coverage at the widened
 radius. It would then replace the terminal-region obligation in the proof table.
 Outer capture from the actual closed cells would remain separate.
+
+## Uniform Forcing of the Retained Features
+
+This section gives sufficient exact checks for removing the 125 omitted owner-axis
+options throughout the wider region.
+The conclusion is conditional on the position, angle and slider bounds; it does not
+establish those bounds for an arbitrary packing in the endpoint cells.
+
+Use the complete certified `inclusion_bounds` from the accepted exp-237 root
+certificate, denoted $R$, with outward rounding if needed.
+Recheck the root certificate before using this enclosure.
+Keep its original contraction-search box separately identified: the midpoint alone and
+the search-box radius are different objects from the certified inclusion enclosure.
+
+Set $\rho_p=1/100$, $|q_i|\le1/200$, and $w\in B_W'$. Thus
+$|\delta_i|=|2\arctan q_i|\le1/100$. For each retained pair require the nominal
+centre-distance bound
+
+$$
+\|x_j^*(w)-x_i^*(w)\|_2\le D=4/3.
+$$
+
+For each of its omitted owner-axis options require the nominal separation gap to be at
+most $g_0=-11/200$. The
+[retained checker](../../../packing/devtools/check_n17_widened_features.py) checks these
+sufficient bounds over all eight closed vertices of $B_W'$ and the entire root enclosure
+$R$.
+
+### Why the finite checks cover the slider box
+
+For fixed root parameters, the centre displacement is affine in $w$, so its squared
+Euclidean norm is convex.
+Bounding it by $16/9$ at the eight vertices bounds it throughout the slider box.
+
+For an omitted option, orient the displacement from the owner to the other square.
+When the owner is the right endpoint of the stored ordered pair, negate the stored axis
+sign as well. If $n$ is this signed owner normal, the support gap equals
+
+$$
+\min_{c\text{ a corner of the other square}}
+\bigl(n\cdot(x_{\rm other}^*(w)+c-x_{\rm owner}^*(w))-1/2\bigr).
+$$
+
+Choose one corner at the nominal midpoint and keep that same corner for all slider
+vertices and the whole root enclosure.
+Its expression is affine in $w$. If its upper interval endpoint is at most $-11/200$ at
+every vertex, it bounds the full support gap throughout the box.
+The chosen corner need not remain the minimizing corner.
+This is an upper bound because the full gap is the minimum of all four expressions.
+
+The check accounts for every omitted option of the 19 retained pairs: 125 options, eight
+slider vertices each, and 19 distance checks at eight vertices.
+Completeness of these rosters is part of the certificate.
+A certificate for a smaller position, angle or slider domain does not discharge this
+fixed contract.
+
+### The finite-angle loss
+
+Write an actual centre as $r_i=x_i^*(w)+e_i$. The 29 position bounds give
+$\|e_i\|_2\le\sqrt2\rho_p$; for labels 5, 11 and 13 the sharper bound is $\rho_p$. For
+an owner-axis option the owner’s support is always $1/2$. The other square’s support in
+that axis is
+
+$$
+h(\phi)=\tfrac12(|\cos\phi|+|\sin\phi|).
+$$
+
+This function is globally $1/2$-Lipschitz: its derivative has absolute value at most
+$1/2$ on each open quadrant, and it is continuous at the quadrant boundaries.
+The relative-angle change is at most $2/100$, so the other support changes by at most
+$1/100$. Rotation of the owner normal changes its projection of the nominal displacement
+by at most $D/100$; position errors add at most $2\sqrt2/100$. Consequently every
+omitted gap is at most
+
+$$
+-\frac{11}{200}+\frac{2\sqrt2}{100}+\frac{D+1}{100}
+< -\frac{11}{200}+\frac{2(99/70)}{100}+\frac{4/3+1}{100}
+=-\frac{71}{21000}<0.
+$$
+
+The rational square-root allowance is valid because $(99/70)^2>2$. No angle grid is used
+in this implication.
+Once the finite nominal checks pass, every nonoverlapping pair in the specified wider
+region must use one of its retained options.
+Hence any physical packing there lies in one of the 256 selected-feature branches.
+This proves neither a side bound for those branches nor capture into the wider region.
+
+## An Apex Bound from the Retained Position Duals
+
+A finite collection of positive-angle patches cannot cover all angles approaching zero.
+The following bound supplies a candidate inner cube without solving a new LP. Its exact
+arithmetic checks are implemented by the
+[apex checker](../../../packing/devtools/check_n17_widened_apex.py); the finite-geometry
+implication in this section remains a hand proof.
+
+Work in the declared fixed container $[0,S^*]^2$. This is legitimate for a smaller
+packing by the centred-container lemma.
+The argument has side increment zero; it is not a bound for an LP whose side variable
+remains unrestricted.
+
+Let $p\in\mathbb R^{29}$ be the non-slider position coordinates, let $M=\|p\|_\infty$,
+and let $\alpha=\max_i|\delta_i|$. Suppose the wider-region hypotheses above hold,
+including $w\in B_W'$. Let $T$ be the 52 positive local rows restricted to the 29
+position lifts: remove all angle columns and the side-increment column.
+
+### Tightness and independence from the sliders
+
+All 52 positive rows are tight at every $x^*(w)$ in $B_W'$. For the 27 retained owner
+options, `slide_invariance_audit` in the
+[local checker](../../../packing/devtools/check_n17_local_minimum.py) proves the nominal
+support gap is independent of the sliders as a rational identity.
+H-257 supplies its zero value at the exact root.
+C10 supplies the active-wall identities.
+An interval enclosing zero at a rational midpoint is not a substitute for these
+identities.
+
+The position coefficients of a wall row are signed coordinate vectors, and those of a
+pair row are its nominal normal on the two centres.
+All slider-dependent moments in `generic_face_rows` occur in angle columns.
+Thus $T$ is independent of $w$, even though the full local matrix is not.
+The three slide directions are annihilated: label 5 moves along its bottom wall and its
+vertical 5/7 contact; labels 11 and 13 move along $v$, perpendicular to the $u$ normals
+of their retained contacts.
+No unchanged full centroid stress is assumed.
+
+For a parallel pair, either retained owner option has the same nominal position row.
+Thus one finite separating option implies the estimate below for both local rows of that
+pair. This is why their different angle columns cause no difficulty after projection to
+$T$.
+
+### The finite-geometry inequality
+
+Containment and retained-feature separation imply
+
+$$
+T_i p\ge-L_i\alpha,
+\qquad
+L_i=\begin{cases}1/2,&i\text{ a wall row},\\12/5,&i\text{ a pair row}.
+\end{cases}
+$$
+
+For a wall, the support change is at most $\alpha/2$. For a pair, compare its actual
+separating normal with the nominal normal at the actual centres.
+Their distance is at most $D+2\sqrt2\rho_p$, and the other-square support changes by at
+most $\alpha$. The total loss is at most
+
+$$
+(D+2\sqrt2\rho_p+1)\alpha<\frac{12}{5}\alpha.
+$$
+
+Root tightness and slide invariance identify the remaining nominal gap with $T_i p$.
+These inequalities use the selected finite separation, not tangent feasibility assumed
+for a finite perturbation.
+
+### Exact dual residuals and the resulting inner cube
+
+Use the 58 signed position-direction certificates from exp-248 `run-002`. For each
+direction $(s,j)$, select the lexicographically first closed slider cell containing
+$w_0=(0,0,0)$ and evaluate its affine multiplier exactly there:
+
+$$
+\lambda_i=\operatorname{lam}_i-
+\sum_{k=1}^3\operatorname{centre}_k\operatorname{mu}_{ki}.
+$$
+
+The retained numerators have denominator $2^{44}$. Check all 52 resulting multipliers
+are nonnegative. Only these constant weights are reused; independence of $T$ from $w$
+makes them applicable throughout $B_W'$. Over the full root enclosure compute
+
+$$
+r_{s,j}=\lambda_{s,j}^{T}T+s e_j^T,
+\qquad
+\epsilon_{s,j}=\sum_{k=1}^{29}\sup_R|r_{s,j,k}|,
+\qquad
+C_{s,j}=\sum_{i=1}^{52}\lambda_{s,j,i}L_i.
+$$
+
+Set $\epsilon=\max_{s,j}\epsilon_{s,j}$ and $C=\max_{s,j}C_{s,j}$. Require $\epsilon<1$
+and $C>0$. Multiplication of the finite-geometry inequalities by $\lambda_{s,j}$ gives
+
+$$
+-s p_j+r_{s,j}p\ge-C_{s,j}\alpha,
+\qquad
+s p_j\le C\alpha+\epsilon M.
+$$
+
+The row $\ell^1$ residual is essential: it bounds $|r_{s,j}p|$ by $\epsilon M$.
+Maximizing over both signs of all 29 coordinates yields
+
+$$
+M\le\frac{C\alpha}{1-\epsilon}.
+$$
+
+Freeze the sufficient radii
+
+$$
+\alpha_0=\min\left\{\frac1{5000},
+\frac{1-\epsilon}{10000C}\right\},
+\qquad q_0=\alpha_0/2.
+$$
+
+If $\|q\|_\infty\le q_0$, then $\alpha\le\alpha_0$, the position coordinates are at most
+$1/10000$, and every one of the 45 non-slider coordinates is at most $1/5000$. The
+accepted local theorem therefore forces the retained squares onto the endpoint family.
+The wider slider-domain premise has been retained explicitly; the old slider-coverage
+theorem has not been applied at radius $1/100$.
+
+The certificate checks the complete 58-direction, 52-row, 29-column roster, nonnegative
+multipliers, root-domain identity, residuals and radius formulas.
+Root tightness, slide invariance, the finite-geometry inequality and the accepted local
+theorem remain named premises.
+Its immediate conclusion concerns physical packings satisfying those premises.
+Extending the conclusion to every point in the selected LP union requires an explicit
+reuse of the local recipe’s proof, rather than a broader reading of its stated packing
+theorem.
+
+## Exact Certificates on the Remaining Angle Region
+
+After an accepted apex certificate, a widened terminal proof still needs to cover the
+compact annulus
+
+$$
+q_0\le\|q\|_\infty\le1/200
+$$
+
+in all 16 half-angle variables, including closed patch boundaries.
+The interval method below permits both finite LP duals and infeasibility multipliers.
+A sampled point or a certified patch is only its declared subset of this annulus.
+
+Fix a rational closed angle box $Q$ and a selected-feature branch.
+Substitute the exact fixed side $S^*$ into its finite inequalities and write
+
+$$
+A(q,R)r\ge b(q,R).
+$$
+
+The centre domain is $r=x^*(w)+Pp$, with $w\in B_W'$ and $p\in[-\rho_p,\rho_p]^{29}$.
+Here $P$ is the exact-root matrix of position lifts.
+Take a retained, nonnegative rational multiplier vector $\lambda$ and set
+$a=\lambda^TA$, $d=\lambda^Tb$. A sufficient contradiction certificate is
+
+$$
+\eta=
+\min_{v\in\operatorname{Vert}(B_W')}
+\inf_{(q,R)\in Q\times R}\bigl(d-a\,x^*(v)\bigr)
+-\rho_p\sum_{j=1}^{29}
+\sup_{(q,R)\in Q\times R}|aP_j|>0.
+$$
+
+Indeed, feasibility would give $ar\ge d$, whereas the affine slider box and the position
+box give $ar<d$. This charges a nonzero stationarity residual to an explicit bounded
+centre domain. It requires neither exact cancellation of $a$ nor an interval matrix
+inverse. Evaluate the expressions with outward exact interval arithmetic, including all
+absolute-value supports and the accepted root enclosure.
+Keep the root parameter and angle-box meanings separate.
+
+A positive sampled side dual can propose $\lambda$ after the fixed-side substitution.
+An all-numerical-infeasible sample instead needs a retained Farkas candidate; its solver
+status supplies no multiplier or exact contradiction.
+Rationalizing a candidate and failing the strict interval check is an unresolved patch,
+not evidence of a feasible packing.
+
+The same certificate can cover several feature branches.
+Give every pair row a stable pair index and enclose both allowed owner rows wherever
+that pair has two options.
+If the strict check succeeds using these row enclosures, it holds for all their
+combinations. Otherwise split the owner choices or retain separate multipliers.
+This interval enclosure is a conservative proof device, not a claim that differing owner
+rows are algebraically equal.
+
+An eventual annulus receipt must identify every covered closed box and every covered
+owner branch, with a mechanically checked cover of the declared annulus.
+Unknown branches, nonpositive margins, uncovered seams and exhausted budgets remain
+unresolved. The apex and annulus together would give a conditional widened terminal
+result on the fixed position and slider domain.
+Outer capture must still map each remaining closed-cell packing into that domain, with
+exact frame and root allowances, or exclude it.
+A successful terminal certificate does not remove any global residue state by itself.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

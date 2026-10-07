@@ -931,7 +931,7 @@ Status: **active**. Execute the selected ten-hour continuation in Session184: pr
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 189 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 190 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1147,7 +1147,8 @@ Status: **active**. Execute the selected ten-hour continuation in Session184: pr
 | H-274 | confirmed | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 1 |  | 196.1m wall |
 | H-275 | open question | proof | On a seeded draw of one residue state from each of the 21 strata of su |  | 2 |  | 569.4m wall |
 | H-276 | confirmed | proof | The retained current-ledger stratifier partitions all surviving states |  | 1 |  | 2s wall |
-| H-277 | running | proof | At the accepted rational-root midpoint, the conditional 19-pair bounde |  | 1 |  |  |
+| H-277 | unresolved | proof | At the accepted rational-root midpoint, the conditional 19-pair bounde |  | 1 |  | 8s wall |
+| H-278 | running | proof | Across the accepted exp237 root inclusion interval and all eight verti |  | 1 |  |  |
 
 ## Needs review — held for a human, not decided
 
@@ -1215,7 +1216,7 @@ Status: **active**. Execute the selected ten-hour continuation in Session184: pr
 | exp-162 | series-000 | 20 | Cursor session-140 | H-218 | The Session-140 research wall expired with no RETAINABLE freeze on the H-218 sweep. Closest masses were leftover n=20 971/200 at 19.910044 unconverged and leftover n=12 3969/1000 at 12.091168 after crossing 12. T-028 at n=18 does not confirm H-218. The unfinished float LPs remain unresolved; their objectives do not refute their site sets. |
 | exp-231 | series-000 | 11 | Claude Session 156, Opus extra-high lane and coordinator | H-236 | The declared caps ran out with 58 of 256 subtrees open and no counterexample candidate, so H-236 is neither confirmed nor refuted; the remaining subtrees are a bounded computation for the unchanged frozen instrument. |
 
-### unresolved (58)
+### unresolved (59)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1277,6 +1278,7 @@ Status: **active**. Execute the selected ten-hour continuation in Session184: pr
 | exp-250 | series-000 | 17 | Claude Session 168; lane K2 produced both certificates and ran both full verifications, lane A3 admitted them and wrote this record | H-267 | Both certificates pass the standing verifier in full and are admitted, and the endpoint survives, but 15,953 orbits remain, and an arity-9 class and a whole state bear on H-267's arity-seven criterion only as progress on the census. |
 | exp-254 | series-000 | 17 | Claude Session 182; the run operator's BC-425 queue produced and verified each certificate on one slot and then two, and admitted each closure in the session checkout | H-267 | Eight of the ten frozen arity-8 flags closed under lane K's frozen SW9 recipe and were admitted on the standing verifier's full pass, and two stopped at its 24-round cap. The certified census fell from 72,248 states in 9,162 orbits to 39,656 states in 5,057 orbits with the endpoint surviving, but arity-8 classes bear on H-267's arity-seven criterion only as progress on the census, so H-267 is unresolved by this round. |
 | exp-255 | series-000 | 17 | Claude Session 182; the run operator's lane E queue ran the ten shards on a second clean run worktree in the slot left after the kernel lanes | H-273 | All 95 distance-2 orbits were searched and none placed, while every shard's control placed. Under the frozen criterion that is no placement in 95 searches, not a proof of infeasibility, so H-273 stays unresolved. The 0.00027 near miss on mask 3963647 is the orbit a later exact or longer search would take first. |
+| exp-260 | series-000 | 17 | GPT-6.1 Sol coordinator executes Astra's frozen mathematical contract, Session184. | H-277 | Forty-three targets have positive finite numerical minima; five all-infeasible targets lack exact Farkas witnesses. The frozen positive criterion is unavailable. Slider omission exposes a negative relaxed margin, so slider coverage remains essential. |
 
 ### blocked (11)
 
@@ -1384,7 +1386,7 @@ Status: **active**. Execute the selected ten-hour continuation in Session184: pr
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
-| exp-260 | series-000 | 17 | GPT-6.1 Sol coordinator executes Astra's frozen mathematical contract, Session184. | H-277 | Mathematical contract, exact q roster, source, controls and ceilings declared before any target solve; no theorem claimed. |
+| exp-261 | series-000 | 17 | Sol coordinator executes Astra's mathematical contract, Session184. | H-278 | Registered before target evaluation; uniform analytical bridge remains a separately scoped Astra hand derivation. |
 
 ## Resumable — stopped on the clock, not on an answer
 
@@ -1433,7 +1435,7 @@ Status: **active**. Execute the selected ten-hour continuation in Session184: pr
 
 ## Effort
 
-189 rounds, 2512.1 agent-minutes, 5729.9 wall-minutes.
+190 rounds, 2512.1 agent-minutes, 5730.0 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

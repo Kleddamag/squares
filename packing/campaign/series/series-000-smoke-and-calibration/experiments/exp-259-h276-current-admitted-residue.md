@@ -80,7 +80,7 @@ They do not mean these states have never been attempted.
 The complete retained partition has 36,784 states in 4,685 orbits under 58 admitted
 entries, the endpoint surviving, across 32 strata.
 Its measured census/partition phase took 2.232 seconds.
-The three distance-two strata hold 95 orbits, matching the historical count but now
+The four distance-two strata hold 95 orbits, matching the historical count but now
 checked against the actual admitted ledger.
 No attempt receipts were supplied; no state is declared historically untested.
 

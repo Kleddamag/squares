@@ -891,6 +891,7 @@ these rows as BC-406 to BC-411.
 | 285 | The per-state exclusion price of n17 residue states in the strata H-264’s draw never reached | registered | [H-275](hypotheses/H-275-n17-unsampled-strata-per-state-price.md) | exp-252 left 21 strata (827 orbits) unsampled and unpriced; H-274 closed all four counted stalls under SW9’s adaptive-row recipe, so the tail can be drawn and priced under it. |
 | 286 | Partition the actual admitted n17 residue into complete D4 and composition/distance strata | registered | [H-276](hypotheses/H-276-n17-admitted-residue-partition.md) | BC-432 needs a ledger-backed queue; historical hypothetical arity-eight populations do not define the current tail. |
 | 287 | Challenge the conditional widened n17 LP with frozen mixed-angle directions | registered | [H-277](hypotheses/H-277-n17-widened-lp-mixed-angle-reconnaissance.md) | Astra specifies complete branch execution, numerical-only margins and matched relaxed controls before more expensive capture work. |
+| 288 | Force the selected n17 feature roster uniformly inside the widened tube | registered | [H-278](hypotheses/H-278-n17-widened-omitted-feature-forcing.md) | Exact fixed-corner and distance bounds support Astra’s separately scoped convexity and Lipschitz argument; capture and slider coverage remain open. |
 
 ## Dead ends
 

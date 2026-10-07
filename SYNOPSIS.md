@@ -632,6 +632,7 @@ case or experiment separately.
 | [n17 Streamed Kernel Verifier Review](docs/project/reviews/review-2026-10-04-n17-streamed-verifier.md) | dated review record | record | retained | — |
 | [n17 Flag 2 Diagnosis](docs/project/reviews/review-2026-10-04-n17-flag2-diagnosis.md) | dated review record | record | retained | — |
 | [n17 Capture Route After Pilot 2](docs/project/reviews/review-2026-10-05-n17-capture-r9.md) | dated review record | record | retained | — |
+| [Fine inward hull proposals](docs/project/reviews/review-2026-10-07-n17-hull-pull.md) | dated review record | record | retained | — |
 | [n17 Stall Classification](docs/project/reviews/review-2026-10-05-n17-stall-classification.md) | dated review record | record | retained | — |
 | [exp-252 Factual Review](docs/project/reviews/review-2026-10-05-exp-252-h264.md) | dated review record | record | retained | — |
 | [exp-253 Factual Review](docs/project/reviews/review-2026-10-05-exp-253-h274.md) | dated review record | record | retained | — |

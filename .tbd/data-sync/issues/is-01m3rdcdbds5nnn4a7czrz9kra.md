@@ -3,16 +3,20 @@ type: is
 id: is-01m3rdcdbds5nnn4a7czrz9kra
 title: "Coordinate the #247 s(11) intake with PR #246's n = 11 optimality work"
 kind: task
-status: open
+status: closed
 priority: 1
-version: 11
+version: 12
 labels:
   - packing
   - low-n
   - coordination
 dependencies: []
 created_at: 2026-09-30T05:42:45.356Z
-updated_at: 2026-10-01T01:38:07.243Z
+updated_at: 2026-10-06T08:42:39.208Z
+closed_at: 2026-10-06T08:42:39.191Z
+close_reason: "Done: PR #246 merged 2026-09-30 and #249 (stack #258/#260) landed 2026-10-01 with Wang-Li as T-061 and T-060 as the optimum. The correction reply on #247 was posted 2026-10-03T18:48Z naming T-061, and #247 is closed (gh issue view 247)."
+resolution: null
+duplicate_of: null
 ---
 Two lines of n = 11 work are open at once. This bead keeps them from colliding.
 

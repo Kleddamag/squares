@@ -908,6 +908,9 @@ case or experiment separately.
 | [Soundness of sqverify-fast](packing/sqverify_fast/SOUNDNESS.md) | component scope and use | definitive | maintained | — |
 | [sqverify-fast](packing/sqverify_fast/README.md) | component scope and use | supporting | maintained | — |
 | [n17bb-native](packing/n17bb_native/README.md) | component scope and use | supporting | maintained | — |
+| [n17_kernel_verifier: an independent Rust verifier of n = 17 kernel certificates](packing/n17_kernel_verify/README.md) | component scope and use | supporting | maintained | — |
+| [Provenance of `n17_kernel_verifier/`](packing/n17_kernel_verify/PROVENANCE.md) | component scope and use | supporting | maintained | — |
+| [Tests](packing/n17_kernel_verify/TESTING.md) | component scope and use | supporting | maintained | — |
 | [Native n17 Branch-and-Bound Benchmark](packing/benchmarks/n17-bb-native/README.md) | component scope and use | supporting | maintained | — |
 | [Milestone A Census](packing/benchmarks/measure-verifier/census/README.md) | generated status view | generated | generated | — |
 | [Milestone B Census](packing/benchmarks/measure-verifier/census-mixed/README.md) | generated status view | generated | generated | — |

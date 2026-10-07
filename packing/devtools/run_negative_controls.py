@@ -482,6 +482,7 @@ PRUNE = frozenset(
         ROOT / "sqverify_exact/target",
         ROOT / "sqverify_fast/target",
         ROOT / "n17bb_native/target",
+        ROOT / "n17_kernel_verify/target",
         ROOT / "witnesses/prospective",
         # The exact certificates of T-056 and T-057 join on 2026-09-29, when their intake
         # (jlevy/squares#227) put the snapshot at 174,743,423 bytes against the
@@ -897,7 +898,7 @@ def _clone_into(src: Path, dst: Path) -> None:
 
 
 INLINE_LINK = re.compile(r"\]\(([^)#\s]+)\)")
-# Omitted sources a checked document may legitimately link into. `.venv` and the three
+# Omitted sources a checked document may legitimately link into. `.venv` and the five
 # cargo `target` directories are symlinked back whole, and `.gate-running` is a
 # marker, so the linked-file copy covers only the content prunes and referenced
 # workflows.
@@ -914,6 +915,7 @@ LINKED_PRUNE_ROOTS = (
             ROOT / "sqverify_exact/target",
             ROOT / "sqverify_fast/target",
             ROOT / "n17bb_native/target",
+            ROOT / "n17_kernel_verify/target",
         }
     ),
     REPO / ".github/workflows",

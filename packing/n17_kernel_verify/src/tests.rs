@@ -18,9 +18,16 @@ fn section(a: i32, b: i32) -> Section {
     (ratio(a, 1), ratio(b, 1))
 }
 fn data(name: &str) -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("tests/data")
-        .join(name)
+    let crate_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    let local = crate_dir.join("tests/data").join(name);
+    // Inside jlevy/squares the stalled certificate is not duplicated: the identical
+    // files live in the campaign record, which is used when no local copy exists.
+    if name == "stall-w7-bins8" && !local.exists() {
+        return crate_dir.join(
+            "../campaign/explorations/X048-session-168-pilots/audit-verifier-rewrites/fixture-w7-bins8",
+        );
+    }
+    local
 }
 fn read(name: &str) -> Value {
     crate::value::from_slice(&std::fs::read(data(name)).unwrap()).unwrap()

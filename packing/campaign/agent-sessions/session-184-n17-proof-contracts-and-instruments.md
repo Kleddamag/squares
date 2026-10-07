@@ -85,7 +85,7 @@ session:
     commitment: BC-433
     objective: Execute the frozen H277 numerical challenge and independently read its output while
       Astra deepens exact proof obligations and Sol finishes a bounded n11 memory guard.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: First-slice proof and instrument contracts are checkable; numerical reconnaissance
       now informs the next mathematical choice.
@@ -100,12 +100,44 @@ session:
       preserve partial artifacts and choose the next ready proof dependency.
     fallback: Keep exact proof-interface/feature-forcing work active and preserve incomplete numerical
       points without expanding the frozen sample.
-    outcome: null
+    outcome: H277 completed all56 evaluations in8.389s and remains inconclusive; independent reader
+      agrees. H278 exact1152bounds and fresh replay passed. Capture RSS consumer guard and exact apex
+      instrument have independent controls/reviews.
     evidence:
     - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-260-h277-widened-lp-reconnaissance.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-261-h278-widened-feature-forcing.md
+    - packing/campaign/series/series-000-smoke-and-calibration/results/exp-260-widened-lp-reconnaissance/independent-reading.json
+    stop_reason: Checkable outputs delivered before the30-minute slice deadline.
+    next_action: Freeze H279, check and replay the conditional apex; build one exact annulus patch
+      while Astra resolves global joins.
+  - workflow: insight-iteration
+    focus: insight
+    recording: contemporaneous
+    clock_role: work
+    commitment: BC-430
+    objective: Check the conditional exact apex and implement one all-branch annulus patch; Astra
+      assesses widened-slider and outer-capture joins.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Exact feature forcing passed; the numerical challenge distinguishes finite positive
+      samples from uncertified infeasibility and slider-domain dependence.
+    budget_minutes: 30
+    started_at: '2026-10-07T08:06:18Z'
+    deadline_at: '2026-10-07T08:36:18Z'
+    expected_output: Accepted or refused apex receipt; controlled all-branch patch instrument and
+      frozen readiness criterion; precise remaining global proof obligations.
+    validation_command: Focused synthetic controls and independent mathematical/mechanical review;
+      preregistered180-second exact generation/replay; async CI.
+    kill_condition: Refuse affected interpretation on failed controls or exact joins. Preserve completed
+      and partial artifacts at the slice deadline without retuning criteria.
+    fallback: Continue widened-slider and global-capture derivations while preserving the exact checker
+      failure and selecting a ready dependency.
+    outcome: null
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-262-h279-widened-apex.md
     stop_reason: null
-    next_action: Freeze source and registration, launch the540-second LP target, then send its partial/final
-      result to Astra.
+    next_action: Freeze apex source and registration, execute bounded exact production/replay; parallel
+      patch implementation and mathematical global-join review.
   primary_bead: think-ipel
   status: in_progress
   budget:
@@ -126,9 +158,9 @@ session:
       verified admitted residue, endpoint preserved.
     before: 'Main ef79288a4: R071 strict lower bound 4.66044275; exact feasible endpoint;36784 states/4685
       orbits under58 admitted entries. Outer capture and full proof composition remain open.'
-    after: Actual admitted residue roster complete; proof-interface, centered-container, trivial endpoint-mask
-      stabilizer and zero-turn stress arguments retained with stated hand-review scope; LP target
-      preregistered, no result yet.
+    after: Current admitted population remains36784states/4685orbits. H277 numerical challenge inconclusive
+      after56completed evaluations; independent reader agrees. H278 exact finite forcing passed with
+      fresh replay; uniform bridge hand-reviewed. H279 registered, target unrun.
   delegations:
   - task: Astra mathematical contracts
     operator: GPT-6 Astra xhigh
@@ -231,12 +263,13 @@ session:
     - shared agenda or admission-ledger mutation
   - task: Astra exact widened-terminal strategy
     operator: GPT-6 Astra xhigh
-    status: in_progress
+    status: completed
     recording: contemporaneous
-    outcome: null
-    evidence: []
-    files: &id001
+    outcome: Delivered the bounded proof/instrument packet with independent controls; worker continues
+      in phase4.
+    evidence: &id001
     - docs/project/research/research-2026-10-07-n17-proof-interfaces-and-lp-contract.md
+    files: *id001
     checks: []
     uncertainty: No new exact-bound or capture verdict; target criteria remain frozen.
     elapsed_seconds: null
@@ -259,13 +292,14 @@ session:
     - shared scientific record mutation
   - task: Sol independent LP reader
     operator: GPT-6.1 Sol high
-    status: in_progress
+    status: completed
     recording: contemporaneous
-    outcome: null
-    evidence: []
-    files: &id002
+    outcome: Delivered the bounded proof/instrument packet with independent controls; worker continues
+      in phase4.
+    evidence: &id002
     - packing/devtools/read_n17_widened_lp.py
     - packing/tests/test_read_n17_widened_lp.py
+    files: *id002
     checks: []
     uncertainty: No new exact-bound or capture verdict; target criteria remain frozen.
     elapsed_seconds: null
@@ -288,13 +322,14 @@ session:
     - shared scientific record mutation
   - task: Sol capture RSS guard
     operator: GPT-6.1 Sol high
-    status: in_progress
+    status: completed
     recording: contemporaneous
-    outcome: null
-    evidence: []
-    files: &id003
+    outcome: Delivered the bounded proof/instrument packet with independent controls; worker continues
+      in phase4.
+    evidence: &id003
     - packing/devtools/pilot_n17_capture.py
     - packing/tests/test_pilot_n17_capture.py
+    files: *id003
     checks: []
     uncertainty: No new exact-bound or capture verdict; target criteria remain frozen.
     elapsed_seconds: null
@@ -315,12 +350,102 @@ session:
     - blocking CI watch
     - unregistered target sample
     - shared scientific record mutation
+  - task: Astra annulus and global proof joins
+    operator: GPT-6 Astra xhigh
+    status: in_progress
+    recording: contemporaneous
+    outcome: null
+    evidence: []
+    files: &id004
+    - docs/project/research/research-2026-10-07-n17-proof-interfaces-and-lp-contract.md
+    checks: []
+    uncertainty: No new exact-bound or capture verdict; target criteria remain frozen.
+    elapsed_seconds: null
+    elapsed_quality: unavailable
+    next_action: Review exact patch geometry and derive widened-slider/outer-capture obligations.
+    phase: 4
+    budget_minutes: 30
+    started_at: '2026-10-07T08:06:18Z'
+    deadline_at: '2026-10-07T08:36:18Z'
+    expected_output: Review exact patch geometry and derive widened-slider/outer-capture obligations.
+    validation_command: Focused controls and independent review; no unregistered target measurements.
+    kill_condition: Soundness failure or no checkable artifact at the slice boundary.
+    fallback: Preserve the precise missing dependency and rotate to independent proof-support work.
+    write_scope: *id004
+    excluded_commands:
+    - blocking CI watch
+    - unregistered target sample
+    - shared scientific record mutation
+  - task: Sol exact annulus patch instrument
+    operator: GPT-6.1 Sol high
+    status: in_progress
+    recording: contemporaneous
+    outcome: null
+    evidence: []
+    files: &id005
+    - packing/devtools/check_n17_widened_annulus_patch.py
+    - packing/tests/test_check_n17_widened_annulus_patch.py
+    checks: []
+    uncertainty: No new exact-bound or capture verdict; target criteria remain frozen.
+    elapsed_seconds: null
+    elapsed_quality: unavailable
+    next_action: Build the one all-branch patch checker with synthetic controls; no target before
+      registration.
+    phase: 4
+    budget_minutes: 30
+    started_at: '2026-10-07T08:06:18Z'
+    deadline_at: '2026-10-07T08:36:18Z'
+    expected_output: Build the one all-branch patch checker with synthetic controls; no target before
+      registration.
+    validation_command: Focused controls and independent review; no unregistered target measurements.
+    kill_condition: Soundness failure or no checkable artifact at the slice boundary.
+    fallback: Preserve the precise missing dependency and rotate to independent proof-support work.
+    write_scope: *id005
+    excluded_commands:
+    - blocking CI watch
+    - unregistered target sample
+    - shared scientific record mutation
+  - task: Sol independent proof-support review and tracker
+    operator: GPT-6.1 Sol high
+    status: in_progress
+    recording: contemporaneous
+    outcome: null
+    evidence: []
+    files: &id006
+    - packing/devtools/check_n17_widened_apex.py
+    - packing/tests/test_check_n17_widened_apex.py
+    checks: []
+    uncertainty: No new exact-bound or capture verdict; target criteria remain frozen.
+    elapsed_seconds: null
+    elapsed_quality: unavailable
+    next_action: Review exact instruments, reconcile issue405 progress evidence and prepare known-case
+      capture controls.
+    phase: 4
+    budget_minutes: 30
+    started_at: '2026-10-07T08:06:18Z'
+    deadline_at: '2026-10-07T08:36:18Z'
+    expected_output: Review exact instruments, reconcile issue405 progress evidence and prepare known-case
+      capture controls.
+    validation_command: Focused controls and independent review; no unregistered target measurements.
+    kill_condition: Soundness failure or no checkable artifact at the slice boundary.
+    fallback: Preserve the precise missing dependency and rotate to independent proof-support work.
+    write_scope: *id006
+    excluded_commands:
+    - blocking CI watch
+    - unregistered target sample
+    - shared scientific record mutation
   outputs:
   - docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md
   - docs/project/research/research-2026-10-07-n17-proof-interfaces-and-lp-contract.md
   - packing/devtools/stratify_n17_certified_residue.py
   - packing/devtools/probe_n17_widened_lp.py
   - packing/campaign/series/series-000-smoke-and-calibration/results/exp-259-current-admitted-residue/partition.json
+  - packing/campaign/series/series-000-smoke-and-calibration/results/exp-260-widened-lp-reconnaissance/run.json
+  - packing/campaign/series/series-000-smoke-and-calibration/results/exp-260-widened-lp-reconnaissance/independent-reading.json
+  - packing/campaign/series/series-000-smoke-and-calibration/results/exp-261-widened-feature-forcing/certificate.json
+  - packing/campaign/series/series-000-smoke-and-calibration/results/exp-261-widened-feature-forcing/replay.json
+  - packing/devtools/check_n17_widened_features.py
+  - packing/devtools/check_n17_widened_apex.py
   checks:
   - Source ownership checked at f3a13e3a2; no scientific target launched.
   - Pre-session broad local validation interrupted, not counted as a passing gate.
@@ -328,9 +453,13 @@ session:
     successful measured phase2.232seconds; preceding failed publication retained separately.
   - LP focused21controls and independent mathematical/mechanical review passed before target freeze.
   - Native macOS RSS independent8controls passed; capture consumer guard still under implementation.
+  - H277 clean8f7source;56evaluations complete8.389s; independentreader inconclusive; no exact bound.
+  - H278 cleanbd391source;1152finite bounds and fresh replay pass; separately scoped hand bridge.
+  - Apex16syntheticcontrols independently pass; Astra math review and Sol mechanics cleared before
+    target.
   stop_reason: null
-  next_action: Execute exp260 after source freeze; parallel Astra exact-contract analysis, Sol independent
-    reader and Sol capture memory guard. Research deadline remains unchanged.
+  next_action: Freeze apex source and registration, execute bounded exact production/replay; parallel
+    patch implementation and mathematical global-join review.
 ---
 # n17 Proof Contracts and Instruments
 

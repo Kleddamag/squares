@@ -87,9 +87,11 @@ Current local limitations:
 - The previous host’s resource logs are absent on the Mac.
 - The n11 mask-0 and pose-control inputs are retained locally; confirm the chosen
   control’s complete dependency inventory before running it.
-- Compression repair `think-juy9` already has an external executor.
-  Inspect its current ref and review receipt; do not duplicate its writer or import a
-  moving tree.
+- Compression repair PR402 has a fixed candidate at `3745534eb29dc`, imported into this
+  branch at `917163641` and reviewed with exact membership/fallback controls.
+  The optional native RSS guard is integrated; the known-case target still needs
+  registration and production evidence.
+  The upstream PR402 merge is not claimed.
 - `hosted_data publish` requires all manifest objects locally.
   Recover them from the owning host before trying publication; an empty release cannot
   supply them.

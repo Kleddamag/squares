@@ -890,6 +890,7 @@ these rows as BC-406 to BC-411.
 | 284 | n17 residue states that stall at 32 uniform bins close under adaptive rows | registered | [H-274](hypotheses/H-274-n17-per-state-closure-under-adaptive-rows.md) | Lane D found the distance-4 per-state stalls share a north-wall knot whose margins sit between the uniform rows’ losses and a 1/512 collision cut. |
 | 285 | The per-state exclusion price of n17 residue states in the strata H-264’s draw never reached | registered | [H-275](hypotheses/H-275-n17-unsampled-strata-per-state-price.md) | exp-252 left 21 strata (827 orbits) unsampled and unpriced; H-274 closed all four counted stalls under SW9’s adaptive-row recipe, so the tail can be drawn and priced under it. |
 | 286 | Partition the actual admitted n17 residue into complete D4 and composition/distance strata | registered | [H-276](hypotheses/H-276-n17-admitted-residue-partition.md) | BC-432 needs a ledger-backed queue; historical hypothetical arity-eight populations do not define the current tail. |
+| 287 | Challenge the conditional widened n17 LP with frozen mixed-angle directions | registered | [H-277](hypotheses/H-277-n17-widened-lp-mixed-angle-reconnaissance.md) | Astra specifies complete branch execution, numerical-only margins and matched relaxed controls before more expensive capture work. |
 
 ## Dead ends
 

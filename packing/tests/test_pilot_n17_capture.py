@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gzip
 import json
 import math
 import time
@@ -19,6 +20,139 @@ from sqpack.hull_kernel.induction import strict_core
 from sqpack.hull_kernel.rational import Q
 
 EXCLUSION_CAP = Q(1169, 250)
+
+
+def test_memory_guard_uses_current_bytes_and_reports_peak_separately(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    samples = iter((1024, 2049))
+    monkeypatch.setattr(pilot, "current_memory_bytes", lambda: next(samples))
+    monkeypatch.setattr(pilot, "peak_memory_bytes", lambda: 10**9)
+    guard = pilot.MemoryGuard(2048)
+    assert guard.check("safe")
+    assert not guard.check("over")
+    assert guard.stop is not None
+    assert guard.stop["outcome"] == "memory_cap"
+    assert guard.stop["current_rss_bytes"] == 2049
+    assert guard.stop["lifetime_peak_rss_bytes"] == 10**9
+
+
+def test_missing_current_memory_stops_without_peak_fallback(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def unavailable() -> int:
+        raise OSError("sampler unavailable")
+
+    monkeypatch.setattr(pilot, "current_memory_bytes", unavailable)
+    monkeypatch.setattr(pilot, "peak_memory_bytes", lambda: 1)
+    guard = pilot.MemoryGuard(2048)
+    assert not guard.check("native_failure")
+    assert guard.stop is not None
+    assert guard.stop["outcome"] == "memory_unavailable"
+    assert guard.stop["current_rss_bytes"] is None
+
+
+def test_early_memory_stop_retains_incomplete_receipt_and_checks_no_sources(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    monkeypatch.setattr(pilot, "current_memory_bytes", lambda: 2 * 1024**2)
+    monkeypatch.setattr(pilot, "peak_memory_bytes", lambda: 3 * 1024**2)
+
+    def forbidden(*_args: Any, **_kwargs: Any) -> Frame:
+        raise AssertionError("guard must stop before loading sources")
+
+    monkeypatch.setattr(pilot, "n11_frame", forbidden)
+    partial = tmp_path / "partial.json"
+    result = pilot.run(
+        system="n11",
+        cap="capture",
+        bins=4,
+        max_rounds=1,
+        max_live=8,
+        min_width=Q(1, 64),
+        hull_limit=16,
+        max_seconds=10,
+        replay_share=0,
+        save_objects=None,
+        max_memory_mib=1,
+        partial=partial,
+    )
+    assert result["status"] == "INCOMPLETE_MEMORY_CAP"
+    assert result["endpoint_control"] == {"held": None, "checked_after": 0}
+    assert result["rounds"] == []
+    assert json.loads(partial.read_text())["memory"] == result["memory"]
+
+
+def test_memory_stop_after_checked_update_keeps_partial_state_without_resumable_round(
+    endpoint: pilot.Endpoint,
+    frame: Frame,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    readings = iter([1] * 5 + [2049])
+    monkeypatch.setattr(pilot, "current_memory_bytes", lambda: next(readings))
+    monkeypatch.setattr(pilot, "peak_memory_bytes", lambda: 10**9)
+    partial = tmp_path / "partial.json"
+    guard = pilot.MemoryGuard(2048)
+    result = pilot.run_pilot(
+        frame,
+        endpoint,
+        bins=4,
+        max_rounds=2,
+        max_live=8,
+        min_width=Q(1, 64),
+        hull_limit=16,
+        max_seconds=120,
+        progress=False,
+        partial=partial,
+        checkpoints=tmp_path,
+        memory_guard=guard,
+    )
+    assert result.outcome == "memory_cap"
+    assert result.endpoint_lost is None
+    assert len(result.updates) == len(result.node["steps"]) == 1
+    assert result.rounds[-1]["complete"] is False
+    assert guard.stop is not None
+    assert guard.stop["boundary"] == "after_certified_update"
+    retained = json.loads(partial.read_text())
+    assert retained["outcome"] == "memory_cap"
+    assert retained["endpoint_control"]["held"] is True
+    checkpoint = tmp_path / "checkpoint-memory-stop.json.gz"
+    stopped = json.loads(gzip.decompress(checkpoint.read_bytes()))
+    assert stopped["resumable"] is False
+    assert len(stopped["node"]["steps"]) == 1
+    with pytest.raises(RefusalError, match="not a pilot checkpoint"):
+        pilot.load_checkpoint(checkpoint, {})
+    replayed = pilot.replay(frame, result, max_seconds=120)
+    assert replayed["status"] == "PASS_REPLAYED"
+    assert replayed["final_state_agrees"]
+
+
+def test_no_memory_flag_never_calls_memory_sampler(
+    endpoint: pilot.Endpoint,
+    frame: Frame,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def forbidden() -> int:
+        raise AssertionError("unrequested memory sampler")
+
+    monkeypatch.setattr(pilot, "current_memory_bytes", forbidden)
+    monkeypatch.setattr(pilot, "peak_memory_bytes", forbidden)
+    result = pilot.run_pilot(
+        frame,
+        endpoint,
+        bins=4,
+        max_rounds=1,
+        max_live=8,
+        min_width=Q(1, 64),
+        hull_limit=16,
+        max_seconds=120,
+        max_steps=0,
+        progress=False,
+    )
+    assert result.outcome == "step_cap"
+    assert result.memory is None
 
 
 @pytest.fixture(scope="module")

@@ -1,5 +1,5 @@
 ---
-title: Session 184 — n17 proof contracts and instruments
+title: "Session 184 \u2014 n17 proof contracts and instruments"
 softschema:
   contract: packing.squares:AgentSession/v2
   schema: ../schemas/agent-session.schema.yaml
@@ -12,34 +12,34 @@ session:
   started_at: '2026-10-07T07:08:33Z'
   deadline_at: '2026-10-07T17:08:33Z'
   branch: codex/n17-state-review
-  goal: Make mathematically significant progress toward n17 optimality through complete
-    proof interfaces, a controlled retained widened-LP instrument, and the actual
-    admitted-residue queue; preserve all evidence and uncertainty.
+  goal: Make mathematically significant progress toward n17 optimality through complete proof interfaces,
+    a controlled retained widened-LP instrument, and the actual admitted-residue queue; preserve all
+    evidence and uncertainty.
   workflow_phases:
   - workflow: review-planning-oversight
     focus: process
     recording: contemporaneous
     clock_role: work
     commitment: BC-430
-    objective: Activate the available four slots, establish disjoint source ownership
-      and launch the selected BC-430 through BC-433 continuation.
+    objective: Activate the available four slots, establish disjoint source ownership and launch the
+      selected BC-430 through BC-433 continuation.
     status: completed
     entered_by: session_start
     switch_reason: null
     budget_minutes: 30
     started_at: '2026-10-07T07:08:33Z'
     deadline_at: '2026-10-07T07:11:01Z'
-    expected_output: Three disjoint proof-work packets, complete session registration,
-      and controlled engineering artifacts.
-    validation_command: packing-ledger check; focused contract/tool controls; shared-record
-      integration only after writers pause.
-    kill_condition: A soundness alarm stops the affected lane; no target sample starts
-      without its contract and registration. Re-screen at the slice deadline.
-    fallback: Preserve the precise unresolved obligation, narrow the packet and rotate
-      the worker to independent proof-support work.
-    outcome: 'Three existing workers resumed: one Astra mathematical lane and two
-      GPT6.1 Sol engineering lanes. Source was clean at f3a13e3a2. The pre-session
-      noncritical broad gate was interrupted and its owned workers released.'
+    expected_output: Three disjoint proof-work packets, complete session registration, and controlled
+      engineering artifacts.
+    validation_command: packing-ledger check; focused contract/tool controls; shared-record integration
+      only after writers pause.
+    kill_condition: A soundness alarm stops the affected lane; no target sample starts without its
+      contract and registration. Re-screen at the slice deadline.
+    fallback: Preserve the precise unresolved obligation, narrow the packet and rotate the worker
+      to independent proof-support work.
+    outcome: 'Three existing workers resumed: one Astra mathematical lane and two GPT6.1 Sol engineering
+      lanes. Source was clean at f3a13e3a2. The pre-session noncritical broad gate was interrupted
+      and its owned workers released.'
     evidence:
     - docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md
     - packing/campaign/agendas/agenda-043-n17-ten-hour-continuation.md
@@ -50,30 +50,62 @@ session:
     recording: contemporaneous
     clock_role: work
     commitment: BC-430
-    objective: Derive the proof-interface and finite-angle LP contracts while Sol
-      builds disjoint retained tooling and focused controls.
-    status: in_progress
+    objective: Derive the proof-interface and finite-angle LP contracts while Sol builds disjoint
+      retained tooling and focused controls.
+    status: completed
     entered_by: user_request
-    switch_reason: The user requires every available agent slot to advance the mathematical
-      agenda.
+    switch_reason: The user requires every available agent slot to advance the mathematical agenda.
     budget_minutes: 30
     started_at: '2026-10-07T07:11:01Z'
     deadline_at: '2026-10-07T07:38:33Z'
-    expected_output: Three disjoint proof-work packets, complete session registration,
-      and controlled engineering artifacts.
-    validation_command: packing-ledger check; focused contract/tool controls; shared-record
-      integration only after writers pause.
-    kill_condition: A soundness alarm stops the affected lane; no target sample starts
-      without its contract and registration. Re-screen at the slice deadline.
-    fallback: Preserve the precise unresolved obligation, narrow the packet and rotate
-      the worker to independent proof-support work.
-    outcome: null
+    expected_output: Three disjoint proof-work packets, complete session registration, and controlled
+      engineering artifacts.
+    validation_command: packing-ledger check; focused contract/tool controls; shared-record integration
+      only after writers pause.
+    kill_condition: A soundness alarm stops the affected lane; no target sample starts without its
+      contract and registration. Re-screen at the slice deadline.
+    fallback: Preserve the precise unresolved obligation, narrow the packet and rotate the worker
+      to independent proof-support work.
+    outcome: 'Astra delivered proof interfaces and the finite-angle contract; two Sol workers delivered
+      reviewed population and LP instruments. H276 exact roster control passed after one recorded
+      publication failure. Native macOS RSS guard has independent controls. PR402 fine-proposal candidate
+      is consolidated at917163641; no n11 capture target yet. Observed checkpoint: 2026-10-07T07:36:51Z.'
     evidence:
     - docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md
     - packing/campaign/agendas/agenda-043-n17-ten-hour-continuation.md
+    - docs/project/research/research-2026-10-07-n17-proof-interfaces-and-lp-contract.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-259-h276-current-admitted-residue.md
+    stop_reason: Checkable first-slice outputs delivered before its deadline.
+    next_action: Freeze H277/exp260 and execute the bounded numerical challenge while parallel proof,
+      reader and capture-guard lanes continue.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    commitment: BC-433
+    objective: Execute the frozen H277 numerical challenge and independently read its output while
+      Astra deepens exact proof obligations and Sol finishes a bounded n11 memory guard.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: First-slice proof and instrument contracts are checkable; numerical reconnaissance
+      now informs the next mathematical choice.
+    budget_minutes: 30
+    started_at: '2026-10-07T07:36:51Z'
+    deadline_at: '2026-10-07T08:06:51Z'
+    expected_output: Retained LP targets and independent determination; reviewed capture memory guard;
+      precise next proof contract.
+    validation_command: Focused instrument and reader controls; registered LP command with shared540-second
+      ceiling; no blocking CI watch.
+    kill_condition: Failed scientific control refuses affected interpretation. At the slice boundary
+      preserve partial artifacts and choose the next ready proof dependency.
+    fallback: Keep exact proof-interface/feature-forcing work active and preserve incomplete numerical
+      points without expanding the frozen sample.
+    outcome: null
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-260-h277-widened-lp-reconnaissance.md
     stop_reason: null
-    next_action: Receive the initial Astra packet, review tool controls and register
-      the next scientific discriminator before its target command.
+    next_action: Freeze source and registration, launch the540-second LP target, then send its partial/final
+      result to Astra.
   primary_bead: think-ipel
   status: in_progress
   budget:
@@ -84,47 +116,47 @@ session:
   stop_conditions:
   - Research ends at 2026-10-07T16:08:33Z; finalization and handoff end at 2026-10-07T17:08:33Z.
   - Loss of verified external scratch write access pauses disk-heavy work.
-  - A soundness failure stops affected instruments and admissions; it does not idle
-    unaffected mathematical lanes.
-  - No target starts without a frozen claim, source, control, criterion and verification
-    budget.
-  - CI is asynchronous; relevant controls govern local iteration. Deeper checks run
-    at declared integration/closeout checkpoints.
+  - A soundness failure stops affected instruments and admissions; it does not idle unaffected mathematical
+    lanes.
+  - No target starts without a frozen claim, source, control, criterion and verification budget.
+  - CI is asynchronous; relevant controls govern local iteration. Deeper checks run at declared integration/closeout
+    checkpoints.
   progress:
-    metric: Proof obligations discharged or sharply scoped; controlled instrument
-      readiness; fully verified admitted residue, endpoint preserved.
-    before: 'Main ef79288a4: R071 strict lower bound 4.66044275; exact feasible endpoint;36784
-      states/4685 orbits under58 admitted entries. Outer capture and full proof composition
-      remain open.'
-    after: null
+    metric: Proof obligations discharged or sharply scoped; controlled instrument readiness; fully
+      verified admitted residue, endpoint preserved.
+    before: 'Main ef79288a4: R071 strict lower bound 4.66044275; exact feasible endpoint;36784 states/4685
+      orbits under58 admitted entries. Outer capture and full proof composition remain open.'
+    after: Actual admitted residue roster complete; proof-interface, centered-container, trivial endpoint-mask
+      stabilizer and zero-turn stress arguments retained with stated hand-review scope; LP target
+      preregistered, no result yet.
   delegations:
   - task: Astra mathematical contracts
     operator: GPT-6 Astra xhigh
-    status: in_progress
+    status: completed
     recording: contemporaneous
-    outcome: null
-    evidence: []
+    outcome: Initial bounded artifact delivered and reviewed; worker continues in the next slice.
+    evidence:
+    - docs/project/research/research-2026-10-07-n17-proof-interfaces-and-lp-contract.md
     files:
     - docs/project/research/research-2026-10-07-n17-proof-interfaces-and-lp-contract.md
-    checks: []
-    uncertainty: No target measurement or scientific verdict yet; mathematical choices
-      return to Astra.
+    checks:
+    - Focused controls passed; no full session gate claimed.
+    uncertainty: Sole Astra hand derivations retain their stated review scope; numerical tools produce
+      no exact bound.
     elapsed_seconds: null
     elapsed_quality: unavailable
-    next_action: Proof-interface table and finite-angle LP implementation packet;
-      resolve branch semantics and review all new mathematical choices.
+    next_action: Proof-interface table and finite-angle LP implementation packet; resolve branch semantics
+      and review all new mathematical choices.
     phase: 2
     budget_minutes: 30
     started_at: '2026-10-07T07:11:01Z'
     deadline_at: '2026-10-07T07:38:33Z'
-    expected_output: Proof-interface table and finite-angle LP implementation packet;
-      resolve branch semantics and review all new mathematical choices.
-    validation_command: Review the bounded artifact; run only its focused controls
-      before any target registration.
-    kill_condition: Soundness failure or no checkable progress at the first slice
-      boundary.
-    fallback: Report the missing dependency, preserve work and rotate to a ready independent
-      deliverable.
+    expected_output: Proof-interface table and finite-angle LP implementation packet; resolve branch
+      semantics and review all new mathematical choices.
+    validation_command: Review the bounded artifact; run only its focused controls before any target
+      registration.
+    kill_condition: Soundness failure or no checkable progress at the first slice boundary.
+    fallback: Report the missing dependency, preserve work and rotate to a ready independent deliverable.
     write_scope:
     - docs/project/research/research-2026-10-07-n17-proof-interfaces-and-lp-contract.md
     excluded_commands:
@@ -133,31 +165,31 @@ session:
     - shared agenda or admission-ledger mutation
   - task: Sol current-residue instrument
     operator: GPT-6.1 Sol high
-    status: in_progress
+    status: completed
     recording: contemporaneous
-    outcome: null
-    evidence: []
+    outcome: Initial bounded artifact delivered and reviewed; worker continues in the next slice.
+    evidence:
+    - packing/devtools/stratify_n17_certified_residue.py
     files:
     - packing/devtools/stratify_n17_certified_residue.py
-    checks: []
-    uncertainty: No target measurement or scientific verdict yet; mathematical choices
-      return to Astra.
+    checks:
+    - Focused controls passed; no full session gate claimed.
+    uncertainty: Sole Astra hand derivations retain their stated review scope; numerical tools produce
+      no exact bound.
     elapsed_seconds: null
     elapsed_quality: unavailable
-    next_action: Ledger-backed canonical roster/strata with exact census agreement
-      and explicit unavailable diagnostics.
+    next_action: Ledger-backed canonical roster/strata with exact census agreement and explicit unavailable
+      diagnostics.
     phase: 2
     budget_minutes: 30
     started_at: '2026-10-07T07:11:01Z'
     deadline_at: '2026-10-07T07:38:33Z'
-    expected_output: Ledger-backed canonical roster/strata with exact census agreement
-      and explicit unavailable diagnostics.
-    validation_command: Review the bounded artifact; run only its focused controls
-      before any target registration.
-    kill_condition: Soundness failure or no checkable progress at the first slice
-      boundary.
-    fallback: Report the missing dependency, preserve work and rotate to a ready independent
-      deliverable.
+    expected_output: Ledger-backed canonical roster/strata with exact census agreement and explicit
+      unavailable diagnostics.
+    validation_command: Review the bounded artifact; run only its focused controls before any target
+      registration.
+    kill_condition: Soundness failure or no checkable progress at the first slice boundary.
+    fallback: Report the missing dependency, preserve work and rotate to a ready independent deliverable.
     write_scope:
     - packing/devtools/stratify_n17_certified_residue.py
     excluded_commands:
@@ -166,45 +198,139 @@ session:
     - shared agenda or admission-ledger mutation
   - task: Sol widened-LP instrument
     operator: GPT-6.1 Sol high
-    status: in_progress
+    status: completed
     recording: contemporaneous
-    outcome: null
-    evidence: []
+    outcome: Initial bounded artifact delivered and reviewed; worker continues in the next slice.
+    evidence:
+    - packing/devtools/probe_n17_widened_lp.py
     files:
     - packing/devtools/probe_n17_widened_lp.py
-    checks: []
-    uncertainty: No target measurement or scientific verdict yet; mathematical choices
-      return to Astra.
+    checks:
+    - Focused controls passed; no full session gate claimed.
+    uncertainty: Sole Astra hand derivations retain their stated review scope; numerical tools produce
+      no exact bound.
     elapsed_seconds: null
     elapsed_quality: unavailable
-    next_action: Implement Astra's finite-angle rows and branch contract, primal/dual
-      diagnostics and endpoint/slider controls.
+    next_action: Implement Astra's finite-angle rows and branch contract, primal/dual diagnostics
+      and endpoint/slider controls.
     phase: 2
     budget_minutes: 30
     started_at: '2026-10-07T07:11:01Z'
     deadline_at: '2026-10-07T07:38:33Z'
-    expected_output: Implement Astra's finite-angle rows and branch contract, primal/dual
-      diagnostics and endpoint/slider controls.
-    validation_command: Review the bounded artifact; run only its focused controls
-      before any target registration.
-    kill_condition: Soundness failure or no checkable progress at the first slice
-      boundary.
-    fallback: Report the missing dependency, preserve work and rotate to a ready independent
-      deliverable.
+    expected_output: Implement Astra's finite-angle rows and branch contract, primal/dual diagnostics
+      and endpoint/slider controls.
+    validation_command: Review the bounded artifact; run only its focused controls before any target
+      registration.
+    kill_condition: Soundness failure or no checkable progress at the first slice boundary.
+    fallback: Report the missing dependency, preserve work and rotate to a ready independent deliverable.
     write_scope:
     - packing/devtools/probe_n17_widened_lp.py
     excluded_commands:
     - broad CI watch
     - unregistered scientific target sample
     - shared agenda or admission-ledger mutation
+  - task: Astra exact widened-terminal strategy
+    operator: GPT-6 Astra xhigh
+    status: in_progress
+    recording: contemporaneous
+    outcome: null
+    evidence: []
+    files: &id001
+    - docs/project/research/research-2026-10-07-n17-proof-interfaces-and-lp-contract.md
+    checks: []
+    uncertainty: No new exact-bound or capture verdict; target criteria remain frozen.
+    elapsed_seconds: null
+    elapsed_quality: unavailable
+    next_action: derive omitted-feature forcing and exact candidate-certificate obligations; interpret
+      H277 output
+    phase: 3
+    budget_minutes: 30
+    started_at: '2026-10-07T07:36:51Z'
+    deadline_at: '2026-10-07T08:06:51Z'
+    expected_output: derive omitted-feature forcing and exact candidate-certificate obligations; interpret
+      H277 output
+    validation_command: Focused controls and independent review; no unregistered target measurements.
+    kill_condition: Soundness failure or no checkable artifact at the slice boundary.
+    fallback: Preserve the precise missing dependency and rotate to independent proof-support work.
+    write_scope: *id001
+    excluded_commands:
+    - blocking CI watch
+    - unregistered target sample
+    - shared scientific record mutation
+  - task: Sol independent LP reader
+    operator: GPT-6.1 Sol high
+    status: in_progress
+    recording: contemporaneous
+    outcome: null
+    evidence: []
+    files: &id002
+    - packing/devtools/read_n17_widened_lp.py
+    - packing/tests/test_read_n17_widened_lp.py
+    checks: []
+    uncertainty: No new exact-bound or capture verdict; target criteria remain frozen.
+    elapsed_seconds: null
+    elapsed_quality: unavailable
+    next_action: verify frozen H277 roster, coverage, controls and numerical outcomes without theorem
+      promotion
+    phase: 3
+    budget_minutes: 30
+    started_at: '2026-10-07T07:36:51Z'
+    deadline_at: '2026-10-07T08:06:51Z'
+    expected_output: verify frozen H277 roster, coverage, controls and numerical outcomes without
+      theorem promotion
+    validation_command: Focused controls and independent review; no unregistered target measurements.
+    kill_condition: Soundness failure or no checkable artifact at the slice boundary.
+    fallback: Preserve the precise missing dependency and rotate to independent proof-support work.
+    write_scope: *id002
+    excluded_commands:
+    - blocking CI watch
+    - unregistered target sample
+    - shared scientific record mutation
+  - task: Sol capture RSS guard
+    operator: GPT-6.1 Sol high
+    status: in_progress
+    recording: contemporaneous
+    outcome: null
+    evidence: []
+    files: &id003
+    - packing/devtools/pilot_n17_capture.py
+    - packing/tests/test_pilot_n17_capture.py
+    checks: []
+    uncertainty: No new exact-bound or capture verdict; target criteria remain frozen.
+    elapsed_seconds: null
+    elapsed_quality: unavailable
+    next_action: implement optional current-RSS guard for bounded n11 capture with explicit incomplete
+      receipts
+    phase: 3
+    budget_minutes: 30
+    started_at: '2026-10-07T07:36:51Z'
+    deadline_at: '2026-10-07T08:06:51Z'
+    expected_output: implement optional current-RSS guard for bounded n11 capture with explicit incomplete
+      receipts
+    validation_command: Focused controls and independent review; no unregistered target measurements.
+    kill_condition: Soundness failure or no checkable artifact at the slice boundary.
+    fallback: Preserve the precise missing dependency and rotate to independent proof-support work.
+    write_scope: *id003
+    excluded_commands:
+    - blocking CI watch
+    - unregistered target sample
+    - shared scientific record mutation
   outputs:
   - docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md
+  - docs/project/research/research-2026-10-07-n17-proof-interfaces-and-lp-contract.md
+  - packing/devtools/stratify_n17_certified_residue.py
+  - packing/devtools/probe_n17_widened_lp.py
+  - packing/campaign/series/series-000-smoke-and-calibration/results/exp-259-current-admitted-residue/partition.json
   checks:
   - Source ownership checked at f3a13e3a2; no scientific target launched.
   - Pre-session broad local validation interrupted, not counted as a passing gate.
+  - H276 census/partition agreement passed:36784states/4685orbits/58admissions/endpoint survives;
+    successful measured phase2.232seconds; preceding failed publication retained separately.
+  - LP focused21controls and independent mathematical/mechanical review passed before target freeze.
+  - Native macOS RSS independent8controls passed; capture consumer guard still under implementation.
   stop_reason: null
-  next_action: At the first slice boundary, integrate checkable proof contracts and
-    instrument controls, then select and preregister the next mathematical discriminator.
+  next_action: Execute exp260 after source freeze; parallel Astra exact-contract analysis, Sol independent
+    reader and Sol capture memory guard. Research deadline remains unchanged.
 ---
 # n17 Proof Contracts and Instruments
 

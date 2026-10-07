@@ -197,7 +197,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-180](agent-sessions/session-180-n17-producer-memo.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 3 | think-wn6x | Review the rebuilt layer that replaces Draft PR 325 under think-wn6x; upstream think-tmz6 remains the research coordinator. No merge or new compute is authorized by this closeout. |
 | [session-182](agent-sessions/session-182-n17-overnight-lanes.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 4 | think-tmz6 | BC-418 continues under think-tmz6: the owner's decisions recorded here come first (the resource rollups that resource_usage_unmeasured names, lane K's target 2 with the two held re-runs, and the branch-and-bound recalibration); exp-257 resumes at u31 (think-2pjf). |
 | [session-183](agent-sessions/session-183-n17-draw-31.md) | stopped | contemporaneous | `review-planning-oversight` (correctness) | `review-planning-oversight` (correctness) | 3 | think-2pjf | BC-418 continues under think-tmz6. The certificate objects await upload with Session 182's (think-jhgi). |
-| [session-184](agent-sessions/session-184-n17-proof-contracts-and-instruments.md) | in_progress | contemporaneous | `review-planning-oversight` (process) | `insight-iteration` (insight) | 2 | think-ipel | At the first slice boundary, integrate checkable proof contracts and instrument controls, then select and preregister the next mathematical discriminator. |
+| [session-184](agent-sessions/session-184-n17-proof-contracts-and-instruments.md) | in_progress | contemporaneous | `review-planning-oversight` (process) | `pipeline-improvement` (correctness) | 3 | think-ipel | Execute exp260 after source freeze; parallel Astra exact-contract analysis, Sol independent reader and Sol capture memory guard. Research deadline remains unchanged. |
 
 ### Workflow summary
 
@@ -211,7 +211,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 41 | 1 |
 | `research-loop` | 37 | 4 | 133 | 9 |
-| `pipeline-improvement` | 42 | 2 | 214 | 7 |
+| `pipeline-improvement` | 42 | 2 | 215 | 7 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 6 | 3 |
 | `review-planning-oversight` | 10 | 3 | 55 | 6 |
@@ -931,7 +931,7 @@ Status: **active**. Execute the selected ten-hour continuation in Session184: pr
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 188 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 189 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1146,7 +1146,8 @@ Status: **active**. Execute the selected ten-hour continuation in Session184: pr
 | H-273 | unresolved | proof | Each of the 95 orbits at Hamming distance 2 from the endpoint's state  |  | 1 |  | 225.8m wall |
 | H-274 | confirmed | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 1 |  | 196.1m wall |
 | H-275 | open question | proof | On a seeded draw of one residue state from each of the 21 strata of su |  | 2 |  | 569.4m wall |
-| H-276 | running | proof | The retained current-ledger stratifier partitions all surviving states |  | 1 |  |  |
+| H-276 | confirmed | proof | The retained current-ledger stratifier partitions all surviving states |  | 1 |  | 2s wall |
+| H-277 | running | proof | At the accepted rational-root midpoint, the conditional 19-pair bounde |  | 1 |  |  |
 
 ## Needs review — held for a human, not decided
 
@@ -1293,7 +1294,7 @@ Status: **active**. Execute the selected ten-hour continuation in Session184: pr
 | exp-158 | series-000 | 11 | Codex BC303 T2 charge-sweep agent | H-160 | The September 14 strategy reset paused this route before the target charge ran; no target receipt or scientific verdict exists. |
 | exp-160 | series-000 | 11 | Codex BC303 H-162 retained-receipt analyst | H-162 | The September 14 strategy reset paused this route with no exp-158 target receipt; no H-162 comparison or scientific verdict exists. |
 
-### accepted (63)
+### accepted (64)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1360,6 +1361,7 @@ Status: **active**. Execute the selected ten-hour continuation in Session184: pr
 | exp-256 | series-000 | 17 | Claude Session 182; the run operator's BC-427 queue produces and verifies each certificate on two workers and admits each closure in the session checkout | H-267 | Two of the ten targets run closed and were admitted on the standing verifier's full pass, target 4 (488c72d77) and target 6 (340e92b84), and they took the arity-7 line from 10,173 to 9,990 and then 8,191 orbits, the endpoint surviving (receipts/K/census-arity7-after-bc427-t6.json), which meets the criterion. The other eight stalled, six at the 24-round cap and two at producer fixed points, and targets 11 to 16 were not run. The W2 review of exp-251 (docs/project/reviews/review-2026-10-05-exp-251-h267.md) replayed target 4's verification and recounted both the 9,990 and the 8,191 lines; H-267's verdict is exp-251's. |
 | exp-257 | series-000 | 17 | Claude Session 182; the run operator's BC-428 queue runs the states in the frozen order on two workers, verifies each closure, and admits it in the session checkout | H-275 | Accepted, though the round stopped on its clock rather than its criterion: at the verdict u29 was still in verification and u31 had not run. H-275 is an open question and registers no falsifier, so accepted means that the 29 draws that ran to a verdict answer its question for those draws, and the two undecided draws can move the counted answer only within 24 to 26 closures of 29. Of the 27 counted draws that finished, 24 (89%) closed within the 7,000 s ceiling, each re-proved in full by the standing kernel verifier and admitted with the endpoint surviving. Of the other three, u6 and u12 reached producer fixed points inside the ceiling; u15 ended INCOMPLETE at the 7,000 s ceiling, where the checker ran out of time, so it is neither a closure nor a fixed point. The distance-2 draws are reported apart: u8 closed and was admitted and u1 ended INCOMPLETE at the ceiling. A counted closure cost 550 to 1,972 s of process CPU (median 1,113) and its verification 257 to 954 s (median 483); the non-closures cost u6 1,863 s (at a fixed point), u12 1,597 s (at a fixed point), u1 6,101 s (INCOMPLETE) and u15 6,844 s (INCOMPLETE). All 19 counted strata have a finished counted draw and 17 a verified closure; the two distance-2 strata are reached only by u1 and u8. Eight of the ten second draws finished. Draw u29's producer closed at 07:06:36 UTC after 4,644 s of wall and 4,522 s of process CPU; its verification passed after the verdict, at 07:38:15 UTC in 1,899 s, and it is admitted. Counting it gives 25 of 28 (89%), closure CPU 550 to 4,522 s (median 1,135) and verification 257 to 1,899 s (median 493). Not run: u31 (mask 6015871, c4/i>=5/d>=8, a second draw). New starts stopped at 06:17 UTC, 57 minutes before the registered 07:14:04Z deadline, under the coordinator's session-lease rule that no 7,000 s ceiling end after the 08:14:04Z lease; under the registered deadline alone u31 would have started at 06:37:51. A successor resumes at u31. The 29 finished draws' receipts record 47,492 s of wall and 43,806 s of process CPU, and their verifications 12,709 s; u29 adds 4,644 s of wall, 4,522 s of CPU and 1,899 s of verification. The round ran 33,313 s on two workers, from the first start at 21:51:23 UTC to u29's receipt. A stratum with one draw describes that draw, not a closure rate. The W2 factual review (docs/project/reviews/review-2026-10-06-exp-257-h275.md) confirmed the verdict with corrections to the stop reason, the medians, the wall, and the producer and checker wording, which this record carries. |
 | exp-258 | series-000 | 17 | Claude Session 183, the run operator, on one worker; on a closure it verifies the certificate and admits it in the session checkout | H-275 | Accepted on its criterion: draw 31 closed in 577 s of wall and 547 s of process CPU, well inside the 7,000 s ceiling, the standing kernel verifier re-proved it in full in 266 s, and s183-bc429-u31 is admitted with the endpoint surviving, taking the certified census from 36,792 states in 4,686 orbits to 36,784 in 4,685. H-275 is an open question with no falsifier, and this round is one draw: it answers the question for draw 31 only, and the stratum c4/i>=5/d>=8 now has two closed draws (u21 and u31), which describe those draws, not a closure rate. With it, every one of BC-428's 31 frozen draws has a verdict. Counting it with exp-257's, 26 of the 29 counted draws closed (90%); the other three are unchanged (u6 and u12 at producer fixed points, u15 INCOMPLETE at the ceiling), and the distance-2 pair stays apart (u8 closed, u1 INCOMPLETE). Counted closures cost 547 to 4,522 s of process CPU (median 1,112.5 s) and their verifications 257 to 1,899 s (median 482.5 s); draw 31 is the cheapest closure of the draw. exp-257's verdict is not reopened. |
+| exp-259 | series-000 | 17 | GPT-6.1 Sol coordinator, Session184 | H-276 | The complete current-ledger roster agrees with the standing census and preserves the endpoint; this admits no new exclusion. |
 
 ### baseline (12)
 
@@ -1382,7 +1384,7 @@ Status: **active**. Execute the selected ten-hour continuation in Session184: pr
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
-| exp-259 | series-000 | 17 | GPT-6.1 Sol coordinator, Session184 | H-276 | Source, criteria and retained output path declared before the real-ledger control; no target measurement yet. |
+| exp-260 | series-000 | 17 | GPT-6.1 Sol coordinator executes Astra's frozen mathematical contract, Session184. | H-277 | Mathematical contract, exact q roster, source, controls and ceilings declared before any target solve; no theorem claimed. |
 
 ## Resumable — stopped on the clock, not on an answer
 
@@ -1431,7 +1433,7 @@ Status: **active**. Execute the selected ten-hour continuation in Session184: pr
 
 ## Effort
 
-188 rounds, 2512.1 agent-minutes, 5729.8 wall-minutes.
+189 rounds, 2512.1 agent-minutes, 5729.9 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

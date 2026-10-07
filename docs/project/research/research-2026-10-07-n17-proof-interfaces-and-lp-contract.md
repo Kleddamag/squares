@@ -35,7 +35,7 @@ The following obligations state how those parts can be used in one proof.
 | --- | --- | --- | --- |
 | Container normalization | A putative packing in side $s\le S^*$ is translated into $C(s)\subset C(S^*)\subset C(U)$. Preserve this placement thereafter. | The centred-container lemma below; inclusion is exact for ordered side lengths. | Independent review of this hand join; consumers must use the same walls and cell coordinates. |
 | Closed-cell assignment | Every centre is in the closed cover. Choose one containing cell per square. Capacity one makes the chosen cells distinct, giving a 17-cell mask. Boundary membership may allow several masks. | exp-247 and `check_n17_capacity_one_cover`; the census must retain all geometrically allowed assignment masks. | A deterministic choice is safe only with a proof that its transported assignments remain represented. Discarding seam cases because they are non-generic is invalid. |
-| D4 and labels | Apply a symmetry about $m$ to the packing, its chosen cell assignment and its angle axes together. Transfer the mask to its representative. In the endpoint mask, label each assigned square by the corresponding family cell. | Exact cover cell permutations and admitted consumer semantics; $gC(V)=C(V)$ for every $g\in D_4$. | Retain a symmetry/label witness. Handle the endpoint mask’s stabilizer explicitly: prove it fixes the target family modulo permitted labels/sliders, or capture every distinct stabilizer image. |
+| D4 and labels | Apply a symmetry about $m$ to the packing, its chosen cell assignment and its angle axes together. Transfer the mask to its representative. In the endpoint mask, label each assigned square by the corresponding family cell. | Exact cover cell permutations and admitted consumer semantics; $gC(V)=C(V)$ for every $g\in D_4$. The exp-259 endpoint orbit has size 8, so its mask stabilizer is trivial. | Retain the symmetry/label witness, including its action on reflected angle axes. |
 | Global exclusions | Each admitted exclusion rules out its declared cell subpattern at a declared cap $V\ge S^*$, with matching frame, cells and full closed-branch coverage. | Full certificate verification and admission ledger; a subpattern exclusion removes every containing assignment mask and its valid symmetry images. | Close or capture every remaining orbit. The current 36,784 states / 4,685 orbits under 58 entries are a residue, not a cover of terminal neighbourhoods. Held closures require their ruling. |
 | Cap monotonicity | The normalized packing stays inside $C(S^*)\subseteq C(V)$ whenever a certificate uses $V\ge S^*$. | Exact inequalities for the certificate cap and the certified root enclosure. | Tightening a cap below $S^*$ is invalid; changing from centred to origin-anchored walls without transporting cells changes the claim. |
 | Capture cap | Use a rational $U'$ proved to satisfy $S^*\le U'\le U$; the current design requests $0<U'-S^*\le10^{-12}$. Capture runs in $C(U')$ with the original cells. | Root certificate and outward side evaluation; retained producer configuration and verifier. | Prove the cap inequalities and input identities. A small cap excess does not itself bound a coordinate error. |
@@ -94,13 +94,21 @@ verification.
   H254 angle chart.
 - A mask in the endpoint orbit supplies labels, but supplies no metric closeness.
   That is still the capture obligation.
-  Endpoint-mask stabilizers cannot be discarded.
 - The argument uses the restricted capture-target theorem.
   It does not close H-261 as worded, whose unrestricted slider domain includes the
   square-5/6 exchange.
 - The argument remains valid at $s=S^*$, where its conclusion describes the retained
   family. It claims neither uniqueness of square 6’s pose nor global uniqueness before
   the other states are handled.
+
+The retained
+[exp-259 orbit roster](../../../packing/campaign/series/series-000-smoke-and-calibration/results/exp-259-current-admitted-residue/partition.json)
+gives the endpoint representative mask 1900015 and orbit size 8. Since $|D_4|=8$, the
+orbit-stabilizer identity gives a trivial endpoint-mask stabilizer.
+Thus a chosen endpoint-orbit assignment has a unique group element taking it to the
+fixed endpoint representative; no additional stabilizer images of the family need
+separate capture for this cover.
+This observation does not make a centre’s closed-cell assignment unique on a seam.
 
 ### Exact-root allowance and coordinate inventory
 
@@ -340,7 +348,52 @@ relaxation bound after exact-root and row verification.
 It is not a 17-square packing counterexample: square 6 and many pairs were omitted.
 Failure of one numerical dual is neither kind of counterexample.
 
+### The exact zero-turn LP
+
+At the exact algebraic endpoint and $q=0$, every domain profile above has LP value
+$S^*$. Moreover, an equality configuration belongs to the affine three-slider family,
+subject to whichever domain and containment rows the profile keeps.
+This is a hand consequence of the accepted stress, rather than a new numerical result.
+
+To see it, write $h=(r-r^*,0,S-S^*)$ in the stress’s centre, angle and side columns;
+square 6’s coordinates may be set to zero because its rows have zero weight.
+At zero turns, each of the 52 positively weighted stress inequalities is the linear
+centre/side part of one of this LP’s finite pair or active-wall inequalities, or a
+nonnegative combination of such inequalities.
+All eight parallel-owner alternatives coincide at these angles.
+The retained constraints are tight at the endpoint, so LP feasibility implies
+$A_Ph\ge0$. The
+[accepted stress identity](../reviews/review-2026-10-01-n17-core-stress.md) is
+$A_P^{\mathsf T}\lambda=e_S$ at the exact root, with every retained weight positive.
+Consequently $S-S^*=\lambda^{\mathsf T}A_Ph\ge0$. The accepted centroid is feasible in
+every profile at $S=S^*$, giving equality of the optimal value.
+
+If $S=S^*$, positivity forces every retained inequality tight.
+The retained wall contacts and the $1/2$, $1/3$, $5/7$ pairs pin squares 1, 2, 3, 4, 7
+and 8 and the height of 5. The wall of 9 and the $3/9$ pair pin 9. The $9/10$ and $4/10$
+pairs determine 10; $3/11$ fixes 11’s $u^*$ coordinate; $11/12$ and $10/12$ determine
+12; $2/13$ fixes 13’s $u^*$ coordinate; $13/14$ and $12/14$ determine 14. The top wall
+and $10/15$ determine 15; the right wall and $14/17$ determine 17; $15/16$ and $8/16$
+determine 16. Only $x_5$ and the $v^*$ coordinates of 11 and 13 remain free, precisely
+$(a,b,z)$. The remaining retained contacts are consistent by the endpoint identities.
+
+This argument has the same single-author hand-review status as the centred-container
+join. The numerical tool evaluates a rational root midpoint, where the closing rows can
+have small residuals; it must still report those residuals rather than declaring exact
+zero-turn equality from floating agreement.
+
 ## Reconnaissance and Controls
+
+For H-277’s explicitly numerical criterion, a point can contribute positive numerical
+evidence when all 256 branch statuses are `numerically_optimal` or
+`numerically_infeasible`, at least one branch has a finite optimum, and the registered
+primal and dual-candidate margins pass.
+Record the numerical-infeasible counts and keep `bound_coverage_certified=false`. An
+all-numerical-infeasible point is inconclusive.
+An omitted, timed-out, erroneous, residual-failing, unknown or numerically unbounded
+branch prevents positive numerical evidence.
+Numerical infeasibility remains unresolved for any later proved lower bound until a
+valid infeasibility certificate is checked.
 
 ### Deterministic point semantics
 

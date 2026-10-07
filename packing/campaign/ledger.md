@@ -909,6 +909,23 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-428 | research | 17 | complete | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-429 | research | 17 | complete | 1 | think-2pjf | packing/campaign/agent-sessions/session-183-n17-draw-31.md |
 
+### [agenda-043](agendas/agenda-043-n17-ten-hour-continuation.md) — n17 Ten-Hour Continuation
+
+Status: **active**. Consolidated continuation of BC-418: prioritize explicit proof interfaces, controlled widened-LP reconnaissance and the actual admitted residue, with reviewed capture controls and independent custody recovery. This agenda plans ten hours; it does not claim an overnight launch.
+
+| item | purpose | n | state | priority | bead | next evidence |
+| --- | --- | --- | --- | ---: | --- | --- |
+| BC-430 | research | 17 | ready | 0 | think-ipel | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+| BC-431 | research | 17 | ready | 1 | think-53qh | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+| BC-432 | measurement_validation | 17 | ready | 1 | think-dn5h | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+| BC-433 | research | 17 | ready | 1 | think-efe9 | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+| BC-434 | tool_validation | 17 | blocked | 1 | think-juy9 | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+| BC-435 | tool_validation | 17 | blocked | 1 | think-365a | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+| BC-436 | measurement_validation | 17 | blocked | 1 | think-yg80 | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+| BC-437 | research | 17 | tentative | 1 | think-j6qy | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+| BC-438 | tool_validation | 17 | blocked | 1 | think-jhgi | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+| BC-439 | measurement_validation | 17 | ready | 1 | think-ypk2 | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+
 ## Series
 
 | id | status | title | rounds | opened because |

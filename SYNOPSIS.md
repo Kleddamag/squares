@@ -307,8 +307,8 @@ hypothesis status and summarizes experiment verdicts, and the
 
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
-| Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 418 | 219 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 18 in progress |
+| Agendas | 40 | 20 active; 14 completed; 5 paused; 1 superseded |
+| Commitments | 428 | 219 complete; 65 stopped; 74 blocked; 30 ready; 22 tentative; 18 in progress |
 | Sessions | 182 | 105 completed; 77 stopped; all terminal |
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 209 | 45 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 35 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
@@ -573,6 +573,7 @@ case or experiment separately.
 
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
+| [n17 Ten-Hour Overnight Session](docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md) | implementation plan | current | transient | — |
 | [Session 173: Windows owned-Job supervision](packing/campaign/results/session-173-windows-supervision/README.md) | typed session record | record | retained | — |
 | [Windows owned-Job supervision](packing/devtools/windows-supervision.md) | engineering and validation rules | current | maintained | — |
 | [Retained n17 diagnostics](packing/devtools/n17-diagnostics.md) | engineering and validation rules | current | maintained | — |
@@ -1316,6 +1317,7 @@ case or experiment separately.
 | [Exp143 Five-Dot Candidate: Mathematical Review](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/five-dot-transfer-review.md) | research synthesis | record | retained | — |
 | [Five Dots Exclude One Four-Owner Branch at $q=3.84$](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/sprint-report.md) | research synthesis | record | retained | — |
 | [From One Excluded Branch to a Stronger Eleven-Square Bound](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/gaps-to-global-bound.md) | research synthesis | record | retained | — |
+| [n17 W3 Consolidation and Strategy Selection](docs/project/reviews/review-2026-10-06-n17-w3-consolidation.md) | dated review record | record | retained | — |
 | `packing/benchmarks/math-startup/experiments/*.md` | typed experiment record | record | retained | — |
 | `packing/benchmarks/math-startup/explorations/*.md` | typed idea provenance | record | retained | — |
 | `packing/benchmarks/math-startup/hypotheses/*.md` | typed hypothesis record | definitive | maintained | — |
@@ -1542,6 +1544,20 @@ stop. Long autonomous sessions use the same rule; autonomy changes the duration 
 controller, not permission to blur contracts.
 
 ### Current Handoff
+
+The
+[6 October W3 consolidation](docs/project/reviews/review-2026-10-06-n17-w3-consolidation.md)
+reconciles the exploration with the results below.
+BC-418 (`think-tmz6`) remains the next coordinator: proof interfaces and portable
+replay, a capture discriminator with cheap alternate-terminal-theorem reconnaissance,
+and the current exclusion tail are parallel planning priorities.
+It preserves every frozen experimental criterion and the held-control decision; no new
+target run or mathematical verdict belongs to that consolidation.
+The
+[ten-hour launch plan](docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md)
+selects BC-430 / `think-ipel` under BC-418, with Astra for mathematical strategy and
+GPT-6.1 Sol for engineering, review and tracking.
+The overnight run is planned.
 
 [Session 183](packing/campaign/agent-sessions/session-183-n17-draw-31.md) ran the one
 state of BC-428’s draw that exp-257 never reached, draw 31, under BC-429 and exp-258,

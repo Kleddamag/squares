@@ -197,6 +197,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-180](agent-sessions/session-180-n17-producer-memo.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 3 | think-wn6x | Review the rebuilt layer that replaces Draft PR 325 under think-wn6x; upstream think-tmz6 remains the research coordinator. No merge or new compute is authorized by this closeout. |
 | [session-182](agent-sessions/session-182-n17-overnight-lanes.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 4 | think-tmz6 | BC-418 continues under think-tmz6: the owner's decisions recorded here come first (the resource rollups that resource_usage_unmeasured names, lane K's target 2 with the two held re-runs, and the branch-and-bound recalibration); exp-257 resumes at u31 (think-2pjf). |
 | [session-183](agent-sessions/session-183-n17-draw-31.md) | stopped | contemporaneous | `review-planning-oversight` (correctness) | `review-planning-oversight` (correctness) | 3 | think-2pjf | BC-418 continues under think-tmz6. The certificate objects await upload with Session 182's (think-jhgi). |
+| [session-184](agent-sessions/session-184-n17-proof-contracts-and-instruments.md) | in_progress | contemporaneous | `review-planning-oversight` (process) | `insight-iteration` (insight) | 2 | think-ipel | At the first slice boundary, integrate checkable proof contracts and instrument controls, then select and preregister the next mathematical discriminator. |
 
 ### Workflow summary
 
@@ -206,14 +207,14 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | --- | ---: | ---: | ---: | ---: |
 | `research-survey` | 4 | 2 | 16 | 2 |
 | `factual-review` | 11 | 1 | 67 | 3 |
-| `insight-iteration` | 29 | 1 | 90 | 4 |
+| `insight-iteration` | 29 | 1 | 91 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 41 | 1 |
 | `research-loop` | 37 | 4 | 133 | 9 |
 | `pipeline-improvement` | 42 | 2 | 214 | 7 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 6 | 3 |
-| `review-planning-oversight` | 9 | 3 | 54 | 6 |
+| `review-planning-oversight` | 10 | 3 | 55 | 6 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -911,14 +912,14 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ### [agenda-043](agendas/agenda-043-n17-ten-hour-continuation.md) — n17 Ten-Hour Continuation
 
-Status: **active**. Consolidated continuation of BC-418: prioritize explicit proof interfaces, controlled widened-LP reconnaissance and the actual admitted residue, with reviewed capture controls and independent custody recovery. This agenda plans ten hours; it does not claim an overnight launch.
+Status: **active**. Execute the selected ten-hour continuation in Session184: prioritize proof interfaces, controlled widened-LP reconnaissance and the actual admitted residue, with reviewed capture controls and independent custody recovery. One Astra owns mathematics, GPT-6.1 Sol owns engineering and coordination.
 
 | item | purpose | n | state | priority | bead | next evidence |
 | --- | --- | --- | --- | ---: | --- | --- |
-| BC-430 | research | 17 | ready | 0 | think-ipel | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
-| BC-431 | research | 17 | ready | 1 | think-53qh | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
-| BC-432 | measurement_validation | 17 | ready | 1 | think-dn5h | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
-| BC-433 | research | 17 | ready | 1 | think-efe9 | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+| BC-430 | research | 17 | in_progress | 0 | think-ipel | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+| BC-431 | research | 17 | in_progress | 1 | think-53qh | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+| BC-432 | measurement_validation | 17 | in_progress | 1 | think-dn5h | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
+| BC-433 | research | 17 | in_progress | 1 | think-efe9 | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
 | BC-434 | tool_validation | 17 | blocked | 1 | think-juy9 | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
 | BC-435 | tool_validation | 17 | blocked | 1 | think-365a | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
 | BC-436 | measurement_validation | 17 | blocked | 1 | think-yg80 | docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md |
@@ -930,7 +931,7 @@ Status: **active**. Consolidated continuation of BC-418: prioritize explicit pro
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 187 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 188 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1145,6 +1146,7 @@ Status: **active**. Consolidated continuation of BC-418: prioritize explicit pro
 | H-273 | unresolved | proof | Each of the 95 orbits at Hamming distance 2 from the endpoint's state  |  | 1 |  | 225.8m wall |
 | H-274 | confirmed | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 1 |  | 196.1m wall |
 | H-275 | open question | proof | On a seeded draw of one residue state from each of the 21 strata of su |  | 2 |  | 569.4m wall |
+| H-276 | running | proof | The retained current-ledger stratifier partitions all surviving states |  | 1 |  |  |
 
 ## Needs review — held for a human, not decided
 
@@ -1376,6 +1378,12 @@ Status: **active**. Consolidated continuation of BC-418: prioritize explicit pro
 | exp-032 | series-000 | 3 | openai-codex | H-021 | The exact connected and isolated controls pass, every declared conflation fails, and all unsupported floating-point observations remain unresolved. |
 | exp-201 | series-000 | 18 | claude-opus-5 | H-201 | Calibration, not a scored round: it freezes p_perturb = 1.0, perturb_scale = 2 and a flat mu = 5 for exp-202 and exp-203, and it turned up a schedule-length effect that is now registered as H-204 rather than folded into an arm. |
 
+### in-progress (1)
+
+| id | series | instance | operator | hypotheses | reason |
+| --- | --- | --- | --- | --- | --- |
+| exp-259 | series-000 | 17 | GPT-6.1 Sol coordinator, Session184 | H-276 | Source, criteria and retained output path declared before the real-ledger control; no target measurement yet. |
+
 ## Resumable — stopped on the clock, not on an answer
 
 | id | hypotheses | spent | stopped by | resume from | reopen when |
@@ -1423,7 +1431,7 @@ Status: **active**. Consolidated continuation of BC-418: prioritize explicit pro
 
 ## Effort
 
-187 rounds, 2512.1 agent-minutes, 5729.8 wall-minutes.
+188 rounds, 2512.1 agent-minutes, 5729.8 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

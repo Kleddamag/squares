@@ -1,7 +1,7 @@
 ---
 title: n17 Ten-Hour Overnight Session
 date: 2026-10-06
-status: planned
+status: active
 ---
 # n17 Ten-Hour Overnight Session
 
@@ -15,13 +15,15 @@ the approach;
 owns commitments and readiness.
 BC-418 remains the program owner.
 
-This is a launch plan, not a record that work ran.
-At actual launch, allocate the next free session ID, create its complete AgentSession/v2
-record with the real offset-aware start `T0`, deadline `T0 + 600 minutes`, and
-finalization start `T0 + 540 minutes`. Session 184 was next free at planning time;
-recheck all refs before allocation.
-Do not start its clock while preparing this plan, backdate phases, or reserve a skeletal
-session record. No overnight target has been launched by this planning block.
+The planning block launched no targets.
+Actual work began in
+[Session 184](../../../../packing/campaign/agent-sessions/session-184-n17-proof-contracts-and-instruments.md)
+at **2026-10-07 00:08:33 PDT**, with a **10:08:33 PDT** deadline and protected
+finalization beginning at **09:08:33 PDT**. Its contemporaneous session record owns
+actual phases, delegations, measurements and dispositions; this document owns the
+schedule and selection rules.
+The launch source is `f3a13e3a217d2f8c17e96570c31ca1c9eda66c63` on
+`codex/n17-state-review`.
 
 Freeze the launch source and ledger before targets.
 The assessed main is `ef79288a4`: R071 gives `4.66044275 < s(17)`, the outward upper

@@ -8,19 +8,19 @@ softschema:
 agenda:
   id: agenda-043
   title: n17 Ten-Hour Continuation
-  updated: '2026-10-06'
+  updated: '2026-10-07'
   status: active
-  objective: 'Consolidated continuation of BC-418: prioritize explicit proof interfaces,
-    controlled widened-LP reconnaissance and the actual admitted residue, with reviewed
-    capture controls and independent custody recovery. This agenda plans ten hours;
-    it does not claim an overnight launch.'
+  objective: 'Execute the selected ten-hour continuation in Session184: prioritize
+    proof interfaces, controlled widened-LP reconnaissance and the actual admitted
+    residue, with reviewed capture controls and independent custody recovery. One
+    Astra owns mathematics, GPT-6.1 Sol owns engineering and coordination.'
   items:
   - id: BC-430
     purpose: research
     owner_focus: process
     instances:
     - 17
-    state: ready
+    state: in_progress
     priority: 0
     question: Coordinate the bounded ten-hour continuation
     budget: Ten elapsed hours; research stops at hour 9.
@@ -36,15 +36,14 @@ agenda:
     artifacts:
     - docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md
     parallel_group: n17-ten-hour
-    note: 'Planned only: register the actual session and scientific hypotheses/experiments
-      at launch. Astra owns mathematical strategy; GPT-6.1 Sol owns engineering, reviews
-      and tracking. BC-418 remains program owner.'
+    note: Launched in Session184. Source ownership is disjoint; root owns shared records.
+      New target samples await contract and registration.
   - id: BC-431
     purpose: research
     owner_focus: insight
     instances:
     - 17
-    state: ready
+    state: in_progress
     priority: 1
     question: Specify the complete proof-composition interfaces
     budget: Astra contract by hour 2; bounded follow-up packets.
@@ -60,15 +59,14 @@ agenda:
     artifacts:
     - docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md
     parallel_group: n17-ten-hour
-    note: 'Planned only: register the actual session and scientific hypotheses/experiments
-      at launch. Astra owns mathematical strategy; GPT-6.1 Sol owns engineering, reviews
-      and tracking. BC-418 remains program owner.'
+    note: Launched in Session184. Source ownership is disjoint; root owns shared records.
+      New target samples await contract and registration.
   - id: BC-432
     purpose: measurement_validation
     owner_focus: correctness
     instances:
     - 17
-    state: ready
+    state: in_progress
     priority: 1
     question: Build current admitted-residue stratification
     budget: Two opening hours for retained tool and census control; renew by evidence.
@@ -84,15 +82,14 @@ agenda:
     artifacts:
     - docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md
     parallel_group: n17-ten-hour
-    note: 'Planned only: register the actual session and scientific hypotheses/experiments
-      at launch. Astra owns mathematical strategy; GPT-6.1 Sol owns engineering, reviews
-      and tracking. BC-418 remains program owner.'
+    note: Launched in Session184. Source ownership is disjoint; root owns shared records.
+      New target samples await contract and registration.
   - id: BC-433
     purpose: research
     owner_focus: insight
     instances:
     - 17
-    state: ready
+    state: in_progress
     priority: 1
     question: Freeze capture contracts and widened-LP reconnaissance
     budget: Two to four engineering hours, then at most one measured worker-hour after
@@ -110,9 +107,8 @@ agenda:
     artifacts:
     - docs/project/specs/active/plan-2026-10-06-n17-ten-hour-session.md
     parallel_group: n17-ten-hour
-    note: 'Planned only: register the actual session and scientific hypotheses/experiments
-      at launch. Astra owns mathematical strategy; GPT-6.1 Sol owns engineering, reviews
-      and tracking. BC-418 remains program owner.'
+    note: Launched in Session184. Source ownership is disjoint; root owns shared records.
+      New target samples await contract and registration.
   - id: BC-434
     purpose: tool_validation
     owner_focus: correctness

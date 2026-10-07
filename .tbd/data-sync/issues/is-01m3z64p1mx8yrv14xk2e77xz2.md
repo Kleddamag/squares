@@ -5,7 +5,7 @@ title: "n17 capture route: reconcile pilot2 falsifier and select controlled succ
 kind: task
 status: in_progress
 priority: 1
-version: 9
+version: 10
 spec_path: docs/project/reviews/review-2026-10-06-n17-w3-consolidation.md
 delegate: claude-code@vm
 labels: []
@@ -13,10 +13,11 @@ dependencies: []
 parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 child_order_hints:
   - is-01m45ncp7p0yab6vmn2x4358d2
+  - is-01m4agrv4m0a14g3qcqvnvktsw
 hold: null
 hold_until: null
 created_at: 2026-10-02T20:50:53.101Z
-updated_at: 2026-10-07T06:23:05.139Z
+updated_at: 2026-10-07T06:28:18.196Z
 started_at: 2026-10-03T22:35:10.737Z
 ---
 Session 168. Pilot 1 (cea300a4) met the capture falsifier (position g=1.000), but review-2026-10-02-n17-capture-after-pilot.md (3f90fc2d) finds it producer-limited by the 24 live-row cap. Pilot 2: max-live 128/256, all live rows bisected to 2^-22, end-angle core, hull cap 48, per-side bounds, widest-row/extent ratio, n11 case-438 contraction control. Falsifier: 3 rounds with widest row < 1/20 of extent and no two-sided extent falling 10%. In-flight uncommitted edits to packing/devtools/pilot_n17_capture.py and its test; runs and receipts in the session scratchpad lanes/c1/p2. Next: integrate receipts into X048-session-168-pilots, record per-round g, decide the capture route.
